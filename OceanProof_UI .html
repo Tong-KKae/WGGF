@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>OceanProof 웹 플랫폼 - 화면설계서 (와이어프레임)</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IBM-Plex-Mono/1.0.5/css/ibm-plex-mono.min.css">
+<style>
+  :root{
+    --bg:#FFFAEB;
+    --surface:#ffffff;
+    --ink:#243024;
+    --ink-soft:#5d6b56;
+    --primary:#629362;
+    --primary-dark:#4c7a4c;
+    --primary-light:#e7f0e3;
+    --primary-pale:#f1f6ec;
+    --line:#e6dcbd;
+    --line-soft:#efe7cc;
+    --accent:#dc8a3c;
+    --accent-light:#fbe9d2;
+    --shadow-sm:0 1px 2px rgba(36,48,36,.06);
+    --shadow-md:0 6px 20px rgba(98,147,98,.12);
+    --shadow-lg:0 16px 48px rgba(36,48,36,.14);
+    --radius-sm:8px;
+    --radius-md:14px;
+    --radius-lg:22px;
+    --line2:var(--line-soft);
+    --gray:var(--primary-light);
+    --gray2:var(--primary-pale);
+  }
+  *{box-sizing:border-box;}
+  ::selection{ background:var(--primary); color:#fff; }
+  body{
+    margin:0; padding:56px 0 120px; background:var(--bg);
+    background-image:radial-gradient(circle at 8% 0%, rgba(98,147,98,.07), transparent 40%),
+                      radial-gradient(circle at 95% 30%, rgba(220,138,60,.06), transparent 35%);
+    font-family:'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    color:var(--ink); -webkit-font-smoothing:antialiased;
+    display:flex; flex-direction:column; align-items:center; gap:96px;
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  .demo-nav{
+    width:1280px; position:sticky; top:16px; z-index:500; background:rgba(255,250,235,.88);
+    backdrop-filter:blur(10px); border:1px solid var(--line); border-radius:999px;
+    padding:10px 22px; display:flex; align-items:center; gap:18px; box-shadow:var(--shadow-md);
+  }
+  .demo-nav .brand{ font-weight:800; font-size:14px; color:var(--primary-dark); white-space:nowrap; }
+  .demo-nav .links{ display:flex; gap:4px; flex-wrap:wrap; flex:1; font-size:11.5px; }
+  .demo-nav .links a{ color:var(--ink-soft); text-decoration:none; padding:6px 10px; border-radius:999px; white-space:nowrap; }
+  .demo-nav .links a:hover{ background:var(--primary-light); color:var(--primary-dark); }
+  .demo-nav .links a.current{ background:var(--primary); color:#fff; font-weight:700; }
+
+  .screen{
+    width:1280px; background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius-lg); position:relative; overflow:visible;
+    box-shadow:var(--shadow-lg); scroll-margin-top:96px;
+    display:none;
+  }
+  .screen.active{ display:block; animation:screenIn .28s ease; }
+  @keyframes screenIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+  .tag{ position:absolute; top:-34px; left:4px; font-size:11px; font-weight:700; color:var(--ink-soft); letter-spacing:.03em; }
+  .tag span{font-weight:600; color:var(--primary-dark); font-size:10.5px; font-family:'IBM Plex Mono',monospace; background:var(--primary-light); padding:2px 8px; border-radius:999px; margin-left:6px;}
+
+  .row{display:flex;}
+  .col{display:flex; flex-direction:column;}
+  .between{justify-content:space-between;}
+  .center{align-items:center; justify-content:center;}
+  .wrap{flex-wrap:wrap;}
+  .gap8{gap:8px;} .gap12{gap:12px;} .gap16{gap:16px;} .gap24{gap:24px;}
+  .pad16{padding:16px;} .pad24{padding:24px;} .pad32{padding:32px;}
+  .grow{flex:1;}
+
+  .wf-box{border:1px solid var(--line); background:var(--surface); border-radius:var(--radius-sm);}
+  .wf-fill{border:1px solid var(--line); background:var(--primary-pale); border-radius:var(--radius-sm);}
+  .wf-card{border:1px solid var(--line); background:var(--surface); border-radius:var(--radius-md); box-shadow:var(--shadow-sm); transition:box-shadow .2s,transform .2s;}
+  .wf-card:hover{ box-shadow:var(--shadow-md); transform:translateY(-2px); }
+  .wf-btn{ border:1px solid var(--ink); border-radius:999px; padding:10px 22px; text-align:center; font-size:13px; font-weight:600; background:#fff; white-space:nowrap; cursor:pointer; transition:all .15s; }
+  .wf-btn:hover{ background:var(--ink); color:#fff; }
+  .wf-btn.solid{background:var(--primary-light); border-color:var(--primary-light); color:var(--primary-dark);}
+  .wf-btn.accent{background:var(--primary); color:#fff; border-color:var(--primary); box-shadow:var(--shadow-sm);}
+  .wf-btn.accent:hover{ background:var(--primary-dark); border-color:var(--primary-dark); }
+  .wf-input{ border:1px solid var(--line); border-radius:var(--radius-sm); padding:11px 14px; font-size:13px; color:var(--ink-soft); background:#fff; }
+  .wf-input:focus{ outline:2px solid var(--primary); }
+  .wf-img{
+    border:1px solid var(--line); border-radius:var(--radius-md);
+    background:linear-gradient(135deg,var(--primary-light) 0%,var(--primary-pale) 55%,var(--accent-light) 100%);
+    display:flex; align-items:center; justify-content:center; color:var(--primary-dark); font-size:12px; text-align:center; font-weight:600;
+  }
+  .wf-map{
+    border:1px solid var(--line); border-radius:var(--radius-md);
+    background:
+      radial-gradient(circle at 20% 30%, rgba(98,147,98,.18) 0, transparent 9%),
+      radial-gradient(circle at 60% 60%, rgba(220,138,60,.18) 0, transparent 8%),
+      radial-gradient(circle at 80% 25%, rgba(98,147,98,.16) 0, transparent 7%),
+      radial-gradient(circle at 40% 80%, rgba(98,147,98,.14) 0, transparent 6%),
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px),
+      #eef4ea;
+    background-size:auto,auto,auto,auto,28px 28px,28px 28px;
+    display:flex; align-items:center; justify-content:center; color:var(--primary-dark); font-size:12px; font-weight:600;
+  }
+  .label{font-size:10.5px; color:var(--primary-dark); text-transform:uppercase; letter-spacing:.08em; font-weight:700; font-family:'IBM Plex Mono',monospace;}
+  .h1{font-size:30px; font-weight:800; margin:0; letter-spacing:-.01em; line-height:1.3;}
+  .h2{font-size:20px; font-weight:800; margin:0; letter-spacing:-.01em;}
+  .h3{font-size:14.5px; font-weight:700; margin:0;}
+  .txt{font-size:13.5px; color:var(--ink-soft); line-height:1.6;}
+  .small{font-size:11px; color:#9aa394;}
+  .divider{border-top:1px solid var(--line);}
+  .divider2{border-top:1px solid var(--line-soft);}
+  .pill{border:1px solid var(--line); border-radius:999px; padding:5px 14px; font-size:11.5px; color:var(--ink-soft); font-weight:600; background:#fff;}
+  .pill.accent{background:var(--primary); color:#fff; border-color:var(--primary);}
+
+  .header{padding:18px 32px;}
+  .logo{font-weight:800; font-size:16px; border:none; padding:0; color:var(--primary-dark); letter-spacing:-.01em;}
+  .nav{font-size:13px; color:var(--ink-soft); font-weight:500;}
+  .nav > div{cursor:pointer;} .nav > div:hover{color:var(--primary-dark);}
+  .footer{padding:22px 32px; font-size:12px; color:#9aa394; background:var(--primary-pale); border-radius:0 0 var(--radius-lg) var(--radius-lg);}
+
+  .hero{padding:56px 32px; min-height:280px;}
+  .section{padding:44px 32px;}
+  .section-title{margin-bottom:24px;}
+
+  .stat{flex:1; border:1px solid var(--line); border-radius:var(--radius-md); padding:24px; text-align:center; background:var(--primary-pale);}
+  .stat .num{font-size:30px; font-weight:800; color:var(--primary-dark); font-family:'IBM Plex Mono',monospace;}
+
+  .sidebar{width:220px; border-right:1px solid var(--line); padding:28px 0; background:var(--primary-pale);}
+  .sidebar .item{padding:12px 24px; font-size:13.5px; border-bottom:none; cursor:pointer; color:var(--ink-soft); font-weight:500; border-left:3px solid transparent;}
+  .sidebar .item:hover{ background:var(--primary-light); }
+  .sidebar .item.active{background:var(--surface); font-weight:700; color:var(--primary-dark); border-left:3px solid var(--primary);}
+  .sidebar .item.soon{ cursor:default; color:#b9bcae; display:flex; justify-content:space-between; align-items:center; }
+  .sidebar .item.soon:hover{ background:none; }
+  .sidebar .item.soon .soon-tag{ font-size:9.5px; font-weight:700; color:#b9bcae; border:1px solid var(--line); border-radius:999px; padding:1px 7px; font-family:'IBM Plex Mono',monospace; }
+
+  table{width:100%; border-collapse:collapse; font-size:12.5px;}
+  th,td{border:none; border-bottom:1px solid var(--line-soft); padding:11px 12px; text-align:left;}
+  th{background:var(--primary-pale); font-weight:700; color:var(--primary-dark); font-size:11px; text-transform:uppercase; letter-spacing:.04em;}
+  html{scroll-behavior:smooth;}
+
+  .step-circle{
+    width:28px; height:28px; min-width:28px; border:1.5px solid var(--line);
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700; background:#fff; color:var(--ink-soft);
+  }
+  .step-circle.done{background:var(--primary); color:#fff; border-color:var(--primary);}
+  .step-circle.accent{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .step-line{width:2px; background:var(--line-soft); flex:1; margin-left:13px;}
+
+  .flow-card{flex:1; min-width:220px; border:1px solid var(--line); border-radius:var(--radius-md); padding:20px; position:relative; background:#fff; box-shadow:var(--shadow-sm);}
+  .flow-arrow{display:flex; align-items:center; justify-content:center; font-size:18px; color:var(--primary); min-width:24px;}
+
+  .type-card{ border:1px solid var(--line); border-radius:var(--radius-md); padding:22px; cursor:pointer; flex:1; min-width:260px; background:#fff; transition:all .2s; }
+  .type-card:hover{background:var(--primary-light); border-color:var(--primary); transform:translateY(-3px); box-shadow:var(--shadow-md);}
+  .badge-box{ width:64px; height:64px; min-width:64px; border:1.5px solid var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; background:var(--primary-light); }
+  .badge-box.locked{ color:#c7cabe; border-style:dashed; border-color:var(--line); background:var(--primary-pale); }
+  .progress-bar{height:8px; border:none; background:var(--primary-pale); border-radius:999px; overflow:hidden;}
+  .progress-bar .fill{height:100%; background:linear-gradient(90deg,var(--primary),var(--primary-dark)); border-radius:999px;}
+  .tabbtn{cursor:pointer; user-select:none; padding:10px 4px; font-size:13.5px; color:var(--ink-soft); border-bottom:2px solid transparent; font-weight:600;}
+  .tabbtn.active{font-weight:800; color:var(--primary-dark); border-bottom:2px solid var(--primary);}
+  .qr-box{
+    width:120px; height:120px; border:1px solid var(--line); border-radius:var(--radius-sm);
+    background:repeating-conic-gradient(var(--ink) 0% 25%, #fff 0% 50%) 0 0/14px 14px;
+    margin:0 auto;
+  }
+
+  /* lang toggle */
+  .lang-toggle{ border:1px solid var(--line); border-radius:999px; overflow:hidden; font-size:11px; background:#fff; }
+  .lang-opt{ padding:5px 12px; cursor:pointer; color:var(--ink-soft); font-weight:600; }
+  .lang-opt.active{ background:var(--primary); color:#fff; font-weight:700; }
+
+  /* progress steps (sponsorship flow) */
+  .flow-steps{ display:flex; align-items:center; gap:0; }
+  .flow-step{ display:flex; align-items:center; gap:8px; font-size:12px; color:#9aa394; }
+  .flow-step .num-circle{ width:24px; height:24px; border:1.5px solid var(--line); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; background:#fff; }
+  .flow-step.active{ color:var(--ink); font-weight:700; }
+  .flow-step.active .num-circle{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .flow-step.done .num-circle{ background:var(--primary); border-color:var(--primary); color:#fff; }
+  .flow-step-sep{ width:40px; height:1.5px; background:var(--line-soft); margin:0 8px; }
+
+  /* pricing card */
+  .price-card{ border:1px solid var(--line); border-radius:var(--radius-md); flex:1; min-width:280px; padding:26px; position:relative; display:flex; flex-direction:column; gap:12px; background:#fff; }
+  .price-card.recommend{ border:2px solid var(--primary); box-shadow:var(--shadow-md); }
+  .recommend-badge{ position:absolute; top:-14px; right:20px; background:var(--accent); color:#fff; font-size:11px; padding:5px 14px; border-radius:999px; font-weight:700; }
+  .price-card .price{ font-size:24px; font-weight:800; color:var(--primary-dark); }
+  .price-card ul{ margin:0; padding-left:18px; font-size:13px; color:var(--ink-soft); line-height:1.9; }
+
+  /* checkbox row */
+  .chk-row{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft); }
+  .chk-box{ width:16px; height:16px; min-width:16px; border:1.5px solid var(--line); border-radius:4px; }
+  .chk-box.checked{ background:var(--primary); border-color:var(--primary); }
+
+  /* certificate */
+  .cert-card{ border:1px solid var(--line); border-radius:var(--radius-lg); padding:36px; background:
+      linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
+  .cert-inner{ border:1px solid var(--line); border-radius:var(--radius-md); background:#fffdf6; padding:36px;
+      background-image:repeating-linear-gradient(135deg, transparent, transparent 28px, rgba(98,147,98,.05) 28px, rgba(98,147,98,.05) 29px); }
+
+  /* radio-ish payment cards */
+  .pay-card{ border:1px solid var(--line); border-radius:var(--radius-md); padding:18px; flex:1; cursor:pointer; text-align:center; background:#fff; transition:all .15s; }
+  .pay-card:hover{ border-color:var(--primary); }
+  .pay-card.selected{ border:2px solid var(--primary); background:var(--primary-light); font-weight:700; color:var(--primary-dark); }
+
+  /* chatbot floating */
+  .chat-fab{
+    position:fixed; right:28px; bottom:28px; z-index:999;
+    border:none; background:var(--primary); color:#fff; padding:14px 22px;
+    font-size:13px; font-weight:700; cursor:pointer; border-radius:999px;
+    box-shadow:0 8px 24px rgba(98,147,98,.35); transition:transform .15s;
+  }
+
+  /* 전역 계정 링크 (로그인 · 마이페이지) · 상단바와 같은 높이, 배경 없는 텍스트 링크 */
+  .account-links{ display:flex; align-items:center; gap:16px; margin-left:14px; padding-left:14px; border-left:1px solid var(--line); }
+  .account-links a{ font-size:12px; font-weight:600; color:var(--ink-soft); text-decoration:none; white-space:nowrap; }
+  .account-links a:hover{ color:var(--primary-dark); }
+
+  /* 시민 모드 / 관리자 모드 전환 */
+  body.mode-admin .nav-citizen{ display:none; }
+  body.mode-citizen .nav-admin{ display:none; }
+  #mode-toggle{
+    font-size:11.5px; font-weight:700; padding:5px 12px; border-radius:999px; cursor:pointer;
+    background:var(--primary); color:#fff; white-space:nowrap;
+  }
+  #mode-toggle:hover{ background:var(--primary-dark); color:#fff; }
+  .chat-fab:hover{ transform:translateY(-2px); background:var(--primary-dark); }
+  .chat-window{
+    position:fixed; right:28px; bottom:90px; z-index:999; width:330px;
+    border:1px solid var(--line); border-radius:var(--radius-lg); background:#fff; display:none; flex-direction:column;
+    box-shadow:var(--shadow-lg); max-height:480px; overflow:hidden;
+  }
+  .chat-window.open{ display:flex; }
+  .chat-header{ background:var(--primary); color:#fff; padding:14px 18px; font-size:13px; font-weight:700; display:flex; justify-content:space-between; align-items:center; }
+  .chat-close{ cursor:pointer; opacity:.85; }
+  .chat-close:hover{ opacity:1; }
+  .chat-body{ padding:16px; display:flex; flex-direction:column; gap:10px; overflow-y:auto; flex:1; background:var(--primary-pale); }
+  .chat-bubble{ background:#fff; border:1px solid var(--line-soft); padding:9px 13px; font-size:12.5px; border-radius:14px 14px 14px 4px; max-width:90%; line-height:1.5; }
+  .chat-bubble.user{ align-self:flex-end; background:var(--primary); color:#fff; border:none; border-radius:14px 14px 4px 14px; }
+  .chat-userselect{ display:flex; gap:6px; flex-wrap:wrap; }
+  .chat-pill{ border:1px solid var(--primary); color:var(--primary-dark); border-radius:999px; padding:5px 12px; font-size:11px; cursor:pointer; background:#fff; font-weight:600; }
+  .chat-pill.active{ background:var(--primary); color:#fff; }
+  .chat-suggest{ display:flex; flex-direction:column; gap:6px; }
+  .chat-suggest-btn{ border:1px solid var(--line); border-radius:10px; padding:9px 12px; font-size:12px; cursor:pointer; text-align:left; background:#fff; }
+  .chat-suggest-btn:hover{ background:var(--primary-light); border-color:var(--primary); }
+  .chat-input-row{ border-top:1px solid var(--line); display:flex; background:#fff; }
+  .chat-input{ flex:1; border:none; padding:12px 14px; font-size:12.5px; color:var(--ink); }
+  .chat-input:empty:before{ content:attr(data-ph); color:#aab2a2; }
+  .chat-send{ border:none; padding:0 18px; background:var(--primary); color:#fff; font-size:12px; font-weight:700; cursor:pointer; }
+  .chat-send:hover{ background:var(--primary-dark); }
+</style>
+</head>
+<body class="mode-citizen">
+
+<div class="demo-nav">
+  <div class="brand" onclick="location.hash='sc01'" style="cursor:pointer;" title="메인페이지로 이동">🌊 OceanProof</div>
+  <div class="links">
+    <a class="nav-citizen" href="#sc06">참여(QR)</a>
+    <a href="#sc09">상세</a><a href="#sc11">ESG(기업)</a>
+    <a href="#sc12">대시보드(공공)</a><a class="nav-admin" href="#sc14">관리자</a><a class="nav-admin" href="#sc25">검증상세</a><a href="#sc15">도입문의</a>
+    <a href="#sc20">결제</a>
+  </div>
+  <div class="account-links">
+    <a class="nav-citizen" href="#sc10">마이페이지</a>
+    <a id="mode-toggle" onclick="toggleMode()">🛠 관리자 모드로 전환</a>
+  </div>
+</div>
+
+<!-- ============ SC-01~04 메인페이지 (SC-27 온보딩 포함) ============ -->
+<div class="screen" id="sc01">
+
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof</div>
+    <div class="row gap24 nav">
+      <div onclick="location.hash='sc08'">프로젝트</div>
+      <div onclick="location.hash='sc17'">스폰서십</div>
+      <div onclick="location.hash='sc15'">도입 문의</div>
+    </div>
+    <div class="row gap8 center">
+      <div class="lang-toggle row" id="lang-toggle-main"><div class="lang-opt active" data-lang="KR">KR</div><div class="lang-opt" data-lang="EN">EN</div></div>
+      <div class="wf-btn accent" onclick="location.hash='sc06'">참여하기</div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- SC-01 Hero -->
+  <div class="hero row gap24">
+    <div class="col gap16 grow" style="justify-content:center;">
+      <div class="label">SC-01 · 플랫폼 소개 (Hero)</div>
+      <div class="h1 i18n" data-kr="시민의 해양 복원 참여를,<br>측정 가능한 ESG 자산으로" data-en="Turning Citizen Ocean Restoration<br>into Measurable ESG Assets">시민의 해양 복원 참여를,<br>측정 가능한 ESG 자산으로</div>
+      <div class="txt i18n" data-kr="위성·드론·GIS 복합 검증을 통해 시민 참여 데이터를 신뢰할 수 있는 환경 데이터로 전환하는 통합 디지털 플랫폼입니다." data-en="An integrated digital platform that converts citizen participation into trusted environmental data through satellite, drone, and GIS verification.">위성·드론·GIS 복합 검증을 통해 시민 참여 데이터를 신뢰할 수 있는 환경 데이터로 전환하는 통합 디지털 플랫폼입니다.</div>
+      <div class="row gap8">
+        <div class="wf-btn accent" onclick="location.hash='sc06'">QR로 참여 시작하기</div>
+        <div class="wf-btn" onclick="location.hash='sc15'">기업/기관 도입 문의</div>
+      </div>
+    </div>
+    <div class="wf-map grow" style="height:240px;">
+      <div class="col gap8 center">
+        <div>🗺️ 해양 복원 프로젝트 지도</div>
+        <div class="small">(전국 진행 프로젝트 위치 시각화)</div>
+      </div>
+    </div>
+  </div>
+  <div class="divider2"></div>
+
+  <!-- SC-27 온보딩 (메인페이지 내 섹션으로 통합) -->
+  <div class="section" style="text-align:center;">
+    <div class="section-title">
+      <div class="label">SC-27 · 작동 방식</div>
+      <div class="h2">OceanProof는 이렇게 작동합니다</div>
+    </div>
+    <div class="row gap16 wrap" style="justify-content:center;">
+      <div class="flow-card"><div class="small">01</div><div class="h3" style="margin:6px 0;">QR로 참여</div><div class="txt">시민이 QR로 해양 복원 활동에 참여합니다</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-card"><div class="small">02</div><div class="h3" style="margin:6px 0;">데이터 수집</div><div class="txt">GPS·사진·활동 로그가 자동 수집됩니다</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-card"><div class="small">03</div><div class="h3" style="margin:6px 0;">MRV 검증</div><div class="txt">위성·드론·GIS 기반으로 데이터를 검증합니다</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-card"><div class="small">04</div><div class="h3" style="margin:6px 0;">ESG 활용</div><div class="txt">기업/공공기관이 ESG 리포트로 활용합니다</div></div>
+    </div>
+  </div>
+  <div class="divider2"></div>
+
+  <!-- SC-02 사용자 유형 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="label">SC-02 · 이용 대상 선택</div>
+      <div class="h2">어떤 목적으로 방문하셨나요?</div>
+    </div>
+    <div class="row gap16 wrap">
+      <div class="type-card" onclick="location.hash='sc06'">
+        <div class="h3" style="margin-bottom:8px;">🙋 시민 참여자</div>
+        <div class="txt">QR 스캔으로 바로 활동 참여, 배지·인증서 획득</div>
+      </div>
+      <div class="type-card" onclick="location.hash='sc15'">
+        <div class="h3" style="margin-bottom:8px;">🏢 기업 / ESG 담당자</div>
+        <div class="txt">검증된 환경 데이터로 ESG 공시 리포트 받기</div>
+      </div>
+      <div class="type-card" onclick="location.hash='sc12'">
+        <div class="h3" style="margin-bottom:8px;">🏛️ 지방자치단체·공공기관</div>
+        <div class="txt">해양 복원 프로젝트 운영 및 정책 성과 관리</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="footer row between">
+    <div>© 2026 OceanProof · GREENERS</div>
+    <div class="row gap16"><div>이용약관</div><div>개인정보처리방침</div><div>문의하기</div></div>
+  </div>
+</div>
+
+<!-- ============ SC-05 로그인 / 회원가입 ============ -->
+<div class="screen" id="sc05">
+  <div class="row" style="min-height:560px;">
+    <div class="wf-img grow" style="border-right:1.5px solid var(--ink);">해양 복원 현장 이미지</div>
+    <div class="col grow pad32 gap24" style="justify-content:center;">
+      <div class="logo" style="width:fit-content;">🌊 OceanProof</div>
+      <div class="row gap8" style="border-bottom:1.5px solid var(--ink);">
+        <div class="tabbtn active">로그인</div>
+        <div class="tabbtn">회원가입</div>
+      </div>
+      <div class="col gap12">
+        <div class="label">사용자 유형</div>
+        <div class="row gap8">
+          <div class="pill accent">시민</div>
+          <div class="pill">기업/기관 담당자</div>
+        </div>
+        <div class="wf-input">이메일</div>
+        <div class="wf-input">비밀번호</div>
+        <div class="wf-btn accent" style="width:100%; text-align:center;" onclick="location.hash='sc10'">로그인</div>
+        <div class="divider2"></div>
+        <div class="row gap8">
+          <div class="wf-btn grow" onclick="location.hash='sc10'">Google로 계속하기</div>
+          <div class="wf-btn grow" onclick="location.hash='sc10'">Kakao로 계속하기</div>
+        </div>
+        <div class="small">※ 시민의 경우 계정 없이도 QR 참여 가능 (간편 참여)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-06 QR 참여 진입 / 활동 등록 ============ -->
+<div class="screen" id="sc06">
+
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof</div>
+    <div class="pill accent">현장 참여 모드</div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="pad32 col gap24" style="max-width:640px; margin:0 auto;">
+    <div class="col gap8 center" style="text-align:center;">
+      <div class="label">SC-06a · QR 스캔 진입</div>
+      <div class="qr-box"></div>
+      <div class="h3">QR코드를 스캔하면 앱 설치 없이<br>바로 이 화면이 열립니다</div>
+      <div class="txt">스마트폰 · 태블릿 · PC 등 인터넷 접속 기기 모두 지원</div>
+    </div>
+
+    <div class="divider2"></div>
+
+    <div class="col gap16">
+      <div class="label">SC-06b · 참여 프로젝트 / 활동 선택</div>
+      <div class="wf-fill pad16 row between center">
+        <div class="txt">📍 참여 프로젝트: <b>고성 잘피밭 복원 캠페인</b></div>
+        <div class="small">위치 자동 인식됨</div>
+      </div>
+      <div class="row gap8">
+        <div class="choice-box wf-card pad16 grow center" style="background:var(--gray2); font-weight:bold;">🌱 잘피 식재</div>
+        <div class="choice-box wf-card pad16 grow center">🗑️ 쓰레기 수거</div>
+        <div class="choice-box wf-card pad16 grow center">📋 모니터링 기록</div>
+      </div>
+    </div>
+
+    <div class="divider2"></div>
+
+    <div class="col gap16">
+      <div class="label">SC-06c · GPS + 사진 증거 제출</div>
+      <div class="wf-img" style="height:180px;">📷 사진 업로드 / 촬영<br><span class="small">자동 지오태깅 · 타임스탬프 적용</span></div>
+      <div class="row gap16">
+        <div class="wf-fill pad16 grow txt">위도/경도: 자동 수집됨<br>34.xxxx, 128.xxxx</div>
+        <div class="wf-fill pad16 grow txt">촬영 시각: 자동 수집됨<br>2026-06-30 14:22</div>
+      </div>
+      <div class="wf-input">간단 메모 (선택)</div>
+      <div class="wf-btn accent" style="width:100%; text-align:center;" onclick="location.hash='sc07'">활동 기록 제출하기</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-07 참여 완료 / 보상 ============ -->
+<div class="screen" id="sc07">
+  <div class="pad32 col gap24 center" style="max-width:640px; margin:0 auto; text-align:center; min-height:480px; justify-content:center;">
+    <div class="label">SC-07 · 보상 및 인증</div>
+    <div class="step-circle accent" style="width:56px; height:56px; font-size:24px; margin:0 auto;">✓</div>
+    <div class="h1">활동 기록이 제출되었습니다!</div>
+    <div class="txt">검증 절차(위성·드론·GIS) 완료 후 인증서가 발급됩니다. 약 3~5일 소요</div>
+    <div class="row gap16">
+      <div class="col center gap8">
+        <div class="badge-box">🌱</div>
+        <div class="small">잘피 식재 배지<br>(획득)</div>
+      </div>
+      <div class="col center gap8">
+        <div class="badge-box locked">🗑️</div>
+        <div class="small">정화 활동 배지<br>(미획득)</div>
+      </div>
+      <div class="col center gap8">
+        <div class="badge-box locked">🏅</div>
+        <div class="small">10회 참여 배지<br>(미획득)</div>
+      </div>
+    </div>
+    <div class="wf-fill pad16" style="width:100%;">누적 활동 포인트: <b>120P</b> · 파트너 혜택과 연계됩니다</div>
+    <div class="row gap8">
+      <div class="wf-btn" onclick="location.hash='sc10'">마이페이지로 이동</div>
+      <div class="wf-btn accent" onclick="location.hash='sc08'">다른 프로젝트 참여하기</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-08 프로젝트 목록 ============ -->
+<div class="screen" id="sc08">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof</div>
+    <div class="row gap24 nav"><div onclick="location.hash='sc08'">프로젝트</div></div>
+  </div>
+  <div class="divider"></div>
+  <div class="pad32 col gap16">
+    <div class="row between center">
+      <div class="h2">해양 복원 프로젝트</div>
+      <div class="row gap8">
+        <div class="wf-input" style="width:220px;">지역 검색</div>
+        <div class="pill">전체</div><div class="pill">진행중</div><div class="pill">모집중</div>
+      </div>
+    </div>
+    <div class="row gap16 wrap">
+      <div class="wf-card grow" style="min-width:300px; cursor:pointer;" onclick="location.hash='sc09'">
+        <div class="wf-img" style="height:140px;">프로젝트 대표 이미지</div>
+        <div class="pad16 col gap8">
+          <div class="row between"><div class="h3">고성 잘피밭 복원 캠페인</div><div class="pill accent">모집중</div></div>
+          <div class="txt">참여자 248명 · 진행률 62%</div>
+          <div class="progress-bar"><div class="fill" style="width:62%;"></div></div>
+        </div>
+      </div>
+      <div class="wf-card grow" style="min-width:300px; cursor:pointer;" onclick="location.hash='sc09'">
+        <div class="wf-img" style="height:140px;">프로젝트 대표 이미지</div>
+        <div class="pad16 col gap8">
+          <div class="row between"><div class="h3">부산 해안 쓰레기 정화</div><div class="pill">진행중</div></div>
+          <div class="txt">참여자 412명 · 진행률 80%</div>
+          <div class="progress-bar"><div class="fill" style="width:80%;"></div></div>
+        </div>
+      </div>
+      <div class="wf-card grow" style="min-width:300px; cursor:pointer;" onclick="location.hash='sc09'">
+        <div class="wf-img" style="height:140px;">프로젝트 대표 이미지</div>
+        <div class="pad16 col gap8">
+          <div class="row between"><div class="h3">여수 갯벌 모니터링</div><div class="pill">진행중</div></div>
+          <div class="txt">참여자 96명 · 진행률 35%</div>
+          <div class="progress-bar"><div class="fill" style="width:35%;"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-09 프로젝트 상세 ============ -->
+<div class="screen" id="sc09">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof</div>
+    <div class="back-link txt" style="text-decoration:underline; cursor:pointer;" onclick="location.hash='sc08'">← 프로젝트 목록</div>
+  </div>
+  <div class="divider"></div>
+  <div class="row" style="min-height:520px;">
+    <div class="col grow pad32 gap16">
+      <div class="pill accent" style="width:fit-content;">모집중</div>
+      <div class="h1">고성 잘피밭 복원 캠페인</div>
+      <div class="txt">잘피밭(해초지) 생태 구역 지정 후 시민 참여형 식재 및 모니터링을 진행하는 프로젝트입니다.</div>
+      <div class="wf-map" style="height:220px;">지정 생태 구역 지도 (Leaflet.js)</div>
+      <div class="row gap16">
+        <div class="stat"><div class="num">3.2ha</div><div class="txt">복원 면적</div></div>
+        <div class="stat"><div class="num">1.4t</div><div class="txt">탄소 격리량</div></div>
+        <div class="stat"><div class="num">248명</div><div class="txt">참여 시민</div></div>
+      </div>
+      <div class="h3">스폰서 기업</div>
+      <div class="row gap8"><div class="wf-fill pad16 grow center small">기업 로고 A</div><div class="wf-fill pad16 grow center small">기업 로고 B</div></div>
+    </div>
+    <div class="sidebar col" style="width:280px; border-right:none; border-left:1.5px solid var(--ink); padding:32px;">
+      <div class="h3" style="margin-bottom:12px;">참여 방법</div>
+      <div class="txt" style="margin-bottom:16px;">현장 QR코드를 스캔하거나 아래 버튼으로 참여하세요</div>
+      <div class="wf-btn accent" style="text-align:center; margin-bottom:12px;" onclick="location.hash='sc06'">지금 참여하기</div>
+      <div class="divider2" style="margin:12px 0;"></div>
+      <div class="small">상태: 진행중 (2026.05 ~ 2026.11)<br>승인 방식: 자동 승인</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-10 시민 마이페이지 ============ -->
+<div class="screen" id="sc10">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof</div>
+    <div class="wf-btn" onclick="location.hash='sc01'">로그아웃</div>
+  </div>
+  <div class="divider"></div>
+  <div class="row" style="min-height:600px;">
+    <div class="sidebar col">
+      <div class="item active" data-tab="activity" onclick="showTab('sc10','activity')">활동 이력</div>
+      <div class="item" data-tab="badges" onclick="showTab('sc10','badges')">배지 · 인증서</div>
+      <div class="item" data-tab="projects" onclick="showTab('sc10','projects')">참여 프로젝트</div>
+      <div class="item soon">계정 설정<span class="soon-tag">준비중</span></div>
+    </div>
+    <div class="grow pad32 col gap24">
+      <div class="row gap16">
+        <div class="wf-img" style="width:80px; height:80px; border-radius:50%;">프로필</div>
+        <div class="col gap8" style="justify-content:center;">
+          <div class="h2">김해양 님</div>
+          <div class="txt">누적 활동 12회 · 320포인트 · 배지 4개</div>
+        </div>
+      </div>
+      <div class="divider2"></div>
+
+      <!-- 활동 이력 패널 -->
+      <div class="tab-panel col gap16" data-tab="activity">
+        <div class="h3">최근 활동 이력</div>
+        <table>
+          <tbody>
+            <tr><th>날짜</th><th>프로젝트</th><th>활동</th><th>검증 상태</th></tr>
+            <tr><td>2026-06-28</td><td>고성 잘피밭 복원</td><td>잘피 식재</td><td>검증 완료</td></tr>
+            <tr><td>2026-06-15</td><td>부산 해안 정화</td><td>쓰레기 수거</td><td>검증중</td></tr>
+            <tr><td>2026-05-30</td><td>여수 갯벌 모니터링</td><td>모니터링 기록</td><td>검증 완료</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 배지 · 인증서 패널 (기본 숨김, 사이드바 클릭 시에만 표시) -->
+      <div class="tab-panel col gap16" data-tab="badges" style="display:none;">
+        <div class="h3">획득 배지</div>
+        <div class="row gap16 wrap">
+          <div class="col center gap8"><div class="badge-box">🌱</div><div class="small">잘피 식재</div></div>
+          <div class="col center gap8"><div class="badge-box">🗑️</div><div class="small">정화 활동</div></div>
+          <div class="col center gap8"><div class="badge-box">📋</div><div class="small">모니터링</div></div>
+          <div class="col center gap8"><div class="badge-box locked">🏅</div><div class="small">미획득</div></div>
+        </div>
+        <div class="divider2"></div>
+        <div class="h3">발급된 인증서</div>
+        <div class="cert-card">
+          <div class="cert-inner col gap10">
+            <div class="row between"><div class="label">CERTIFICATE NO.</div><div class="txt">OP-CERT-2026-000114</div></div>
+            <div class="divider2"></div>
+            <div class="row between txt"><div>프로젝트명</div><div><b>고성 잘피밭 복원 캠페인</b></div></div>
+            <div class="row between txt"><div>활동 유형</div><div><b>잘피 식재</b></div></div>
+            <div class="row between txt"><div>활동 일시</div><div><b>2026-06-28 14:22</b></div></div>
+            <div class="row between txt"><div>검증 상태</div><div class="pill accent">검증 완료</div></div>
+            <div class="row between txt"><div>복원 면적 기여</div><div><b>0.02ha</b></div></div>
+            <div class="row between txt"><div>예상 탄소 기여량</div><div><b>0.01tCO₂</b></div></div>
+          </div>
+        </div>
+        <div class="row gap8">
+          <div class="wf-btn accent">인증서 PDF 다운로드</div>
+          <div class="wf-btn">SNS 공유하기</div>
+        </div>
+      </div>
+
+      <!-- 참여 프로젝트 패널 (기본 숨김) -->
+      <div class="tab-panel col gap16" data-tab="projects" style="display:none;">
+        <div class="h3">참여 프로젝트</div>
+        <div class="row gap16 wrap">
+          <div class="wf-card grow" style="min-width:260px; cursor:pointer;" onclick="location.hash='sc09'">
+            <div class="wf-img" style="height:120px;">프로젝트 대표 이미지</div>
+            <div class="pad16 col gap8">
+              <div class="row between"><div class="h3">고성 잘피밭 복원 캠페인</div><div class="pill accent">모집중</div></div>
+              <div class="txt">참여자 248명 · 진행률 62%</div>
+              <div class="progress-bar"><div class="fill" style="width:62%;"></div></div>
+            </div>
+          </div>
+          <div class="wf-card grow" style="min-width:260px; cursor:pointer;" onclick="location.hash='sc09'">
+            <div class="wf-img" style="height:120px;">프로젝트 대표 이미지</div>
+            <div class="pad16 col gap8">
+              <div class="row between"><div class="h3">부산 해안 쓰레기 정화</div><div class="pill">진행중</div></div>
+              <div class="txt">참여자 412명 · 진행률 80%</div>
+              <div class="progress-bar"><div class="fill" style="width:80%;"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="wf-btn" onclick="location.hash='sc08'">전체 프로젝트 둘러보기</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-11 기업용 ESG 대시보드 ============ -->
+<div class="screen" id="sc11">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof · BUSINESS</div>
+    <div class="row gap8"><div class="pill">GREENERS 주식회사</div><div class="wf-btn" onclick="location.hash='sc01'">로그아웃</div></div>
+  </div>
+  <div class="divider"></div>
+  <div class="row" style="min-height:640px;">
+    <div class="sidebar col">
+      <div class="item active" data-tab="dashboard" onclick="showTab('sc11','dashboard')">대시보드</div>
+      <div class="item" data-tab="sponsor" onclick="showTab('sc11','sponsor')">스폰서 프로젝트</div>
+      <div class="item" data-tab="report" onclick="showTab('sc11','report')">ESG 리포트</div>
+      <div class="item soon">브랜딩 자료<span class="soon-tag">준비중</span></div>
+      <div class="item soon">계정 설정<span class="soon-tag">준비중</span></div>
+    </div>
+    <div class="grow pad32 col gap24">
+
+      <!-- 대시보드 패널 -->
+      <div class="tab-panel col gap24" data-tab="dashboard">
+        <div class="row between center">
+          <div class="h2">2026년 2분기 ESG 성과</div>
+          <div class="wf-btn accent" onclick="showTab('sc11','report')">📄 PDF 리포트 다운로드</div>
+        </div>
+        <div class="row gap16">
+          <div class="stat"><div class="num">8.4ha</div><div class="txt">복원 면적</div></div>
+          <div class="stat"><div class="num">3.6t</div><div class="txt">탄소 격리량 (tCO₂/년)</div></div>
+          <div class="stat"><div class="num">1,240kg</div><div class="txt">수거 폐기물</div></div>
+          <div class="stat"><div class="num">680명</div><div class="txt">참여 시민</div></div>
+        </div>
+        <div class="row gap16">
+          <div class="wf-img grow" style="height:160px;">월별 탄소 격리량 추이 (차트)</div>
+          <div class="wf-img grow" style="height:160px;">스폰서 프로젝트별 기여도 (차트)</div>
+        </div>
+        <div class="row gap16">
+          <div class="wf-fill pad16 grow txt">Scope 3 탄소 감축 기여 데이터: <b>3.6 tCO₂</b> 반영 가능</div>
+          <div class="wf-fill pad16 grow txt">브랜딩 캠페인용 인증 뱃지·로고 <span style="text-decoration:underline;">다운로드</span></div>
+        </div>
+      </div>
+
+      <!-- 스폰서 프로젝트 패널 -->
+      <div class="tab-panel col gap20" data-tab="sponsor" style="display:none;">
+        <div class="h2">해양 복원 프로젝트 스폰서십</div>
+        <div class="txt">기업은 해양 복원 프로젝트를 후원하고, 검증된 환경 임팩트 데이터를 ESG 리포트와 브랜딩 자료로 활용할 수 있습니다.</div>
+        <div class="row gap16 wrap">
+          <div class="price-card">
+            <div class="label">Basic</div>
+            <div class="price">월/프로젝트 300만원~</div>
+            <ul>
+              <li>프로젝트 후원</li>
+              <li>기업 로고 노출</li>
+              <li>기본 성과 요약 제공</li>
+              <li>참여 시민 수 제공</li>
+            </ul>
+            <div class="wf-btn grow" style="text-align:center; margin-top:auto;" onclick="location.hash='sc18'">Basic 선택</div>
+          </div>
+          <div class="price-card recommend">
+            <div class="recommend-badge">추천</div>
+            <div class="label">Standard</div>
+            <div class="price">월/프로젝트 700만원~</div>
+            <ul>
+              <li>Basic 포함</li>
+              <li>ESG 데이터 리포트 제공</li>
+              <li>탄소 격리량/복원 면적/폐기물 수거량 제공</li>
+              <li>인증 배지 다운로드</li>
+            </ul>
+            <div class="wf-btn accent grow" style="text-align:center; margin-top:auto;" onclick="location.hash='sc18'">Standard 선택 (현재 이용중)</div>
+          </div>
+          <div class="price-card">
+            <div class="label">Premium</div>
+            <div class="price">맞춤 견적</div>
+            <ul>
+              <li>Standard 포함</li>
+              <li>맞춤형 ESG 리포트</li>
+              <li>브랜딩 캠페인 페이지 제공</li>
+              <li>공공기관/지역 커뮤니티 연계</li>
+              <li>전담 매니저 배정</li>
+            </ul>
+            <div class="wf-btn grow" style="text-align:center; margin-top:auto;" onclick="location.hash='sc15'">Premium 문의</div>
+          </div>
+        </div>
+        <div class="wf-fill pad16 txt center" style="text-align:center;">※ 스폰서십은 탄소 크레딧 판매가 아니라 검증 가능한 ESG 커뮤니케이션 데이터 제공 서비스입니다.</div>
+      </div>
+
+      <!-- ESG 리포트 패널 -->
+      <div class="tab-panel col gap20" data-tab="report" style="display:none;">
+        <div class="row between center">
+          <div class="col gap4">
+            <div class="h1">ESG Impact Report Preview</div>
+            <div class="txt">기간: 2026 Q2</div>
+          </div>
+          <div class="row gap8">
+            <div class="wf-btn accent">PDF 다운로드</div>
+            <div class="wf-btn">브랜딩 자료 다운로드</div>
+          </div>
+        </div>
+        <div class="row gap16">
+          <div class="stat"><div class="num">8.4ha</div><div class="txt">복원 면적</div></div>
+          <div class="stat"><div class="num">3.6t</div><div class="txt">탄소 격리량 (tCO₂/년)</div></div>
+          <div class="stat"><div class="num">1,240kg</div><div class="txt">수거 폐기물</div></div>
+          <div class="stat"><div class="num">680명</div><div class="txt">참여 시민</div></div>
+        </div>
+        <div class="wf-card pad24 col gap16">
+          <div class="h3">1. 프로젝트 개요</div>
+          <div class="wf-box pad16 txt">고성·부산·여수 3개 해역에서 진행된 시민 참여형 해양 복원 프로젝트 요약 텍스트 영역</div>
+          <div class="h3">2. 데이터 수집 방식</div>
+          <div class="wf-box pad16 txt">QR 기반 시민 참여, GPS·사진 증거 자동 수집 방식 설명 텍스트 영역</div>
+          <div class="h3">3. MRV 검증 절차</div>
+          <div class="wf-box pad16 txt">시민 입력 → 위성 검증 → 드론 샘플링 → GIS 교차검증 → 최종 데이터셋 5단계 절차 설명</div>
+          <div class="h3">4. 환경 임팩트 결과</div>
+          <div class="wf-img" style="height:140px;">분기별 임팩트 결과 차트</div>
+          <div class="h3">5. ESG 커뮤니케이션 활용 문구</div>
+          <div class="wf-box pad16 txt">기업 지속가능경영보고서·홈페이지 등에 인용 가능한 문구 영역</div>
+        </div>
+        <div class="row gap8 wrap">
+          <div class="pill accent">Satellite Verified</div>
+          <div class="pill accent">GIS Cross-Checked</div>
+          <div class="pill accent">Citizen Action Logged</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-12 공공기관용 대시보드 ============ -->
+<div class="screen" id="sc12">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof · GOV</div>
+    <div class="row gap8"><div class="pill">고성군청</div><div class="wf-btn" onclick="location.hash='sc01'">로그아웃</div></div>
+  </div>
+  <div class="divider"></div>
+  <div class="row" style="min-height:640px;">
+    <div class="sidebar col">
+      <div class="item active">지역 성과 지도</div>
+      <div class="item soon">정책 KPI 추적<span class="soon-tag">준비중</span></div>
+      <div class="item soon">참여 시민 현황<span class="soon-tag">준비중</span></div>
+      <div class="item soon">계정 설정<span class="soon-tag">준비중</span></div>
+    </div>
+    <div class="grow pad32 col gap24">
+      <div class="h2">지역별 해양 복원 성과</div>
+      <div class="wf-map" style="height:260px;">지역별 복원 성과 지도 시각화 (Leaflet.js)</div>
+      <div class="row gap16">
+        <div class="stat"><div class="num">5개</div><div class="txt">관할 진행 프로젝트</div></div>
+        <div class="stat"><div class="num">62%</div><div class="txt">연간 KPI 달성률</div></div>
+        <div class="stat"><div class="num">1,820명</div><div class="txt">누적 참여 시민</div></div>
+      </div>
+      <div class="h3">정책 성과 KPI 추적</div>
+      <table>
+        <tbody>
+          <tr><th>지표</th><th>목표</th><th>현재 달성</th><th>달성률</th></tr>
+          <tr><td>해양 복원 면적</td><td>15ha</td><td>9.3ha</td><td>62%</td></tr>
+          <tr><td>시민 참여 인원</td><td>2,000명</td><td>1,820명</td><td>91%</td></tr>
+          <tr><td>해양 폐기물 수거</td><td>5,000kg</td><td>2,640kg</td><td>53%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-13 데이터 검증(MRV) 진행 현황 ============ -->
+<div class="screen" id="sc13">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof · ADMIN</div>
+    <div class="wf-btn" onclick="location.hash='sc01'">관리자 로그아웃</div>
+  </div>
+  <div class="divider"></div>
+  <div class="pad32 col gap24">
+    <div class="label">SC-13 · 5단계 순차 검증 필터</div>
+    <div class="h2">활동 기록 #A-2026-0628-114 검증 현황</div>
+    <div class="wf-card pad24 col gap20">
+      <div class="row gap16">
+        <div class="col" style="align-items:center;"><div class="step-circle done">✓</div><div class="step-line"></div></div>
+        <div class="col gap8 grow"><div class="h3">1단계 · 시민 입력</div><div class="txt">GPS 좌표, 타임스탬프 사진, 현장 활동 로그 — 접수 완료</div></div>
+      </div>
+      <div class="row gap16">
+        <div class="col" style="align-items:center;"><div class="step-circle done">✓</div><div class="step-line"></div></div>
+        <div class="col gap8 grow"><div class="h3">2단계 · 위성 검증</div><div class="txt">Sentinel 위성 영상으로 잘피밭 공간 변화 탐지 완료</div></div>
+      </div>
+      <div class="row gap16">
+        <div class="col" style="align-items:center;"><div class="step-circle accent">3</div><div class="step-line"></div></div>
+        <div class="col gap8 grow"><div class="h3">3단계 · 드론 샘플링 (진행중)</div><div class="txt">고해상도 현장 조사로 밀도·식물 상태 검증 진행중</div></div>
+      </div>
+      <div class="row gap16">
+        <div class="col" style="align-items:center;"><div class="step-circle">4</div><div class="step-line"></div></div>
+        <div class="col gap8 grow"><div class="h3">4단계 · GIS 교차검증</div><div class="txt">공공 GIS 데이터셋과 연계하여 이상값 탐지 예정</div></div>
+      </div>
+      <div class="row gap16">
+        <div class="col" style="align-items:center;"><div class="step-circle">5</div></div>
+        <div class="col gap8 grow"><div class="h3">5단계 · 최종 데이터셋 생성</div><div class="txt">ESG 보고 및 정책 평가용 집계 데이터 생성 예정</div></div>
+      </div>
+    </div>
+    <div class="small">※ 시민 데이터는 최종 출력이 아닌 초기 입력값으로 처리됩니다.</div>
+  </div>
+</div>
+
+<!-- ============ SC-14 관리자 페이지 ============ -->
+<div class="screen" id="sc14">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof · ADMIN</div>
+    <div class="wf-btn" onclick="location.hash='sc01'">관리자 로그아웃</div>
+  </div>
+  <div class="divider"></div>
+  <div class="row" style="min-height:640px;">
+    <div class="sidebar col">
+      <div class="item active" data-tab="activity" onclick="showTab('sc14','activity')">활동/검증 관리</div>
+      <div class="item" data-tab="project" onclick="showTab('sc14','project')">프로젝트 관리</div>
+      <div class="item soon">사용자 관리<span class="soon-tag">준비중</span></div>
+      <div class="item soon">기업 스폰서십 관리<span class="soon-tag">준비중</span></div>
+      <div class="item soon">공지사항 관리<span class="soon-tag">준비중</span></div>
+      <div class="item" data-tab="status" onclick="showTab('sc14','status')">서비스 상태</div>
+    </div>
+    <div class="grow pad32 col gap24">
+
+      <!-- 활동/검증 관리 패널 -->
+      <div class="tab-panel col gap24" data-tab="activity">
+        <div>
+          <div class="h2" style="margin-bottom:12px;">활동/검증 관리</div>
+          <table>
+            <tbody>
+              <tr><th>활동 ID</th><th>시민</th><th>프로젝트</th><th>활동 유형</th><th>검증 단계</th><th style="width:80px;">관리</th></tr>
+              <tr><td>A-0628-114</td><td>김해양</td><td>고성 잘피밭 복원</td><td>잘피 식재</td><td>3/5 드론 검증중</td><td style="cursor:pointer; color:var(--primary-dark); font-weight:700;" onclick="location.hash='sc25'">조회</td></tr>
+              <tr><td>A-0627-098</td><td>박바다</td><td>부산 해안 정화</td><td>쓰레기 수거</td><td>검증 완료</td><td style="cursor:pointer; color:var(--primary-dark); font-weight:700;" onclick="location.hash='sc25'">조회</td></tr>
+              <tr><td>...</td><td class="small">목록 더보기</td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="divider2"></div>
+        <div>
+          <div class="h3" style="margin-bottom:8px;">기업 스폰서십 관리</div>
+          <div class="wf-fill pad16 row between center">
+            <div class="txt">진행중 스폰서십: 6건 · 이번 분기 집행 예산: 4,200만원</div>
+            <div class="wf-btn" onclick="location.hash='sc17'">스폰서십 목록 보기</div>
+          </div>
+        </div>
+        <div>
+          <div class="h3" style="margin-bottom:8px;">전체 현황 모니터링</div>
+          <div class="row gap16">
+            <div class="wf-img grow" style="height:120px;">월별 활동 제출 건수 추이</div>
+            <div class="wf-img grow" style="height:120px;">검증 단계별 처리 현황</div>
+          </div>
+        </div>
+        <div class="row gap16">
+          <div class="wf-card pad16 grow row between center"><div class="txt">위성 API 연동 상태</div><div class="pill">정상</div></div>
+          <div class="wf-card pad16 grow row between center"><div class="txt">GIS 연동 상태</div><div class="pill">정상</div></div>
+        </div>
+      </div>
+
+      <!-- 프로젝트 관리 패널 -->
+      <div class="tab-panel col gap20" data-tab="project" style="display:none;">
+        <div class="h2">신규 프로젝트 등록</div>
+        <div class="row gap24">
+          <div class="col gap16 grow">
+            <div class="wf-input">프로젝트명</div>
+            <div class="col gap8">
+              <div class="label">프로젝트 유형</div>
+              <div class="row gap8 wrap">
+                <div class="pill choice-box" style="background:var(--gray2); font-weight:bold;">잘피 식재</div>
+                <div class="pill choice-box">해양 쓰레기 수거</div>
+                <div class="pill choice-box">갯벌 모니터링</div>
+                <div class="pill choice-box">기타</div>
+              </div>
+            </div>
+            <div class="wf-input">지역</div>
+            <div class="wf-map" style="height:180px;">지도에서 생태 구역 지정 (클릭/드래그)</div>
+            <div class="row gap16">
+              <div class="wf-input grow">모집 시작일</div>
+              <div class="wf-input grow">모집 종료일</div>
+            </div>
+            <div class="wf-input">프로젝트 진행 기간</div>
+            <div class="row gap16">
+              <div class="wf-input grow">목표 복원 면적 (ha)</div>
+              <div class="wf-input grow">목표 참여자 수 (명)</div>
+            </div>
+            <div class="wf-input">예상 탄소 격리량 (tCO₂/년)</div>
+            <div class="wf-img" style="height:100px;">🖼 대표 이미지 업로드</div>
+            <div class="wf-input" style="height:80px; align-items:flex-start; padding-top:10px;">프로젝트 설명</div>
+            <div class="row gap24">
+              <div class="col gap8">
+                <div class="label">공개 여부</div>
+                <div class="row gap8"><div class="pill choice-box" style="background:var(--gray2); font-weight:bold;">공개</div><div class="pill choice-box">비공개</div></div>
+              </div>
+              <div class="col gap8">
+                <div class="label">참여 승인 방식</div>
+                <div class="row gap8"><div class="pill choice-box" style="background:var(--gray2); font-weight:bold;">자동 승인</div><div class="pill choice-box">관리자 승인</div></div>
+              </div>
+            </div>
+            <div class="wf-btn accent" style="width:fit-content;" onclick="location.hash='sc08'">프로젝트 등록하기</div>
+          </div>
+
+          <div class="sidebar col gap8" style="width:300px; border:1.5px solid var(--ink); padding:24px;">
+            <div class="label">미리보기</div>
+            <div class="wf-card">
+              <div class="wf-img" style="height:120px;">대표 이미지</div>
+              <div class="pad16 col gap8">
+                <div class="row between"><div class="h3">신규 프로젝트명</div><div class="pill accent">모집중</div></div>
+                <div class="txt">참여자 0명 · 진행률 0%</div>
+                <div class="progress-bar"><div class="fill" style="width:0%;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 서비스 상태 (검증현황) 패널 -->
+      <div class="tab-panel col gap24" data-tab="status" style="display:none;">
+        <div class="label">SC-13 · 5단계 순차 검증 필터</div>
+        <div class="h2">활동 기록 #A-2026-0628-114 검증 현황</div>
+        <div class="wf-card pad24 col gap20">
+          <div class="row gap16">
+            <div class="col" style="align-items:center;"><div class="step-circle done">✓</div><div class="step-line"></div></div>
+            <div class="col gap8 grow"><div class="h3">1단계 · 시민 입력</div><div class="txt">GPS 좌표, 타임스탬프 사진, 현장 활동 로그 — 접수 완료</div></div>
+          </div>
+          <div class="row gap16">
+            <div class="col" style="align-items:center;"><div class="step-circle done">✓</div><div class="step-line"></div></div>
+            <div class="col gap8 grow"><div class="h3">2단계 · 위성 검증</div><div class="txt">Sentinel 위성 영상으로 잘피밭 공간 변화 탐지 완료</div></div>
+          </div>
+          <div class="row gap16">
+            <div class="col" style="align-items:center;"><div class="step-circle accent">3</div><div class="step-line"></div></div>
+            <div class="col gap8 grow"><div class="h3">3단계 · 드론 샘플링 (진행중)</div><div class="txt">고해상도 현장 조사로 밀도·식물 상태 검증 진행중</div></div>
+          </div>
+          <div class="row gap16">
+            <div class="col" style="align-items:center;"><div class="step-circle">4</div><div class="step-line"></div></div>
+            <div class="col gap8 grow"><div class="h3">4단계 · GIS 교차검증</div><div class="txt">공공 GIS 데이터셋과 연계하여 이상값 탐지 예정</div></div>
+          </div>
+          <div class="row gap16">
+            <div class="col" style="align-items:center;"><div class="step-circle">5</div></div>
+            <div class="col gap8 grow"><div class="h3">5단계 · 최종 데이터셋 생성</div><div class="txt">ESG 보고 및 정책 평가용 집계 데이터 생성 예정</div></div>
+          </div>
+        </div>
+        <div class="small">※ 시민 데이터는 최종 출력이 아닌 초기 입력값으로 처리됩니다.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-15 기업/기관 도입 문의 ============ -->
+<div class="screen" id="sc15">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof</div>
+    <div class="back-link txt" style="text-decoration:underline; cursor:pointer;" onclick="location.hash='sc01'">← 메인으로</div>
+    <div class="row gap8 center">
+      <div class="lang-toggle row"><div class="lang-opt active" data-lang="KR">KR</div><div class="lang-opt" data-lang="EN">EN</div></div>
+      <div class="wf-btn">문의하기</div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="row" style="min-height:680px;">
+    <div class="grow pad32 col gap20">
+      <div class="h1">기업·기관 도입 문의</div>
+      <div class="txt">OceanProof는 해양 복원 활동을 검증 가능한 ESG 데이터로 전환하여 기업과 공공기관의 지속가능성 보고를 지원합니다.</div>
+
+      <div class="row gap16">
+        <div class="wf-input grow">기관/기업명</div>
+        <div class="wf-input grow">담당자명</div>
+      </div>
+      <div class="row gap16">
+        <div class="wf-input grow">이메일</div>
+        <div class="wf-input grow">연락처</div>
+      </div>
+
+      <div class="col gap8">
+        <div class="label">기관 유형 선택</div>
+        <div class="row gap8 wrap">
+          <div class="pill choice-box" style="background:var(--gray2); font-weight:bold;">대기업</div>
+          <div class="pill choice-box">EU 수출기업</div>
+          <div class="pill choice-box">지방자치단체</div>
+          <div class="pill choice-box">공공기관</div>
+          <div class="pill choice-box">기타</div>
+        </div>
+      </div>
+
+      <div class="col gap8">
+        <div class="label">관심 서비스 선택 (복수 선택 가능)</div>
+        <div class="row gap8 wrap">
+          <div class="pill choice-box" style="background:var(--gray2); font-weight:bold;">ESG 리포트</div>
+          <div class="pill choice-box">프로젝트 스폰서십</div>
+          <div class="pill choice-box">공공 프로젝트 운영</div>
+          <div class="pill choice-box">데이터 패키지</div>
+          <div class="pill choice-box">브랜딩 캠페인</div>
+        </div>
+      </div>
+
+      <div class="col gap8">
+        <div class="label">예상 예산 선택</div>
+        <div class="row gap8 wrap">
+          <div class="pill choice-box">500만원 미만</div>
+          <div class="pill choice-box" style="background:var(--gray2); font-weight:bold;">500~1000만원</div>
+          <div class="pill choice-box">1000~3000만원</div>
+          <div class="pill choice-box">3000만원 이상</div>
+          <div class="pill choice-box">미정</div>
+        </div>
+      </div>
+
+      <div class="wf-input" style="height:90px; align-items:flex-start; padding-top:10px;">문의 내용을 입력해주세요</div>
+
+      <div class="wf-btn accent" style="width:fit-content;" onclick="location.hash='sc16'">문의 제출하기</div>
+    </div>
+
+    <div class="sidebar col gap16" style="width:300px; border-right:none; border-left:1.5px solid var(--ink); padding:32px;">
+      <div class="h3">도입 후 제공되는 것</div>
+      <div class="col gap12">
+        <div class="wf-fill pad16 txt">✔ 검증된 환경 임팩트 데이터</div>
+        <div class="wf-fill pad16 txt">✔ ESG 공시용 PDF 리포트</div>
+        <div class="wf-fill pad16 txt">✔ 프로젝트별 성과 대시보드</div>
+        <div class="wf-fill pad16 txt">✔ 캠페인용 인증 배지/로고</div>
+        <div class="wf-fill pad16 txt">✔ 시민 참여 데이터 요약</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-16 도입 문의 제출 완료 ============ -->
+<div class="screen" id="sc16">
+  <div class="pad32 col gap24 center" style="max-width:560px; margin:0 auto; text-align:center; min-height:460px; justify-content:center;">
+    <div class="step-circle accent" style="width:56px; height:56px; font-size:24px; margin:0 auto;">✓</div>
+    <div class="h1">문의가 접수되었습니다</div>
+    <div class="txt">담당자가 입력하신 연락처로 2~3영업일 이내에 연락드립니다.</div>
+    <div class="wf-card pad24 col gap8" style="width:100%; text-align:left;">
+      <div class="row between"><div class="txt">기관명</div><div class="h3">GREENERS 주식회사</div></div>
+      <div class="row between"><div class="txt">관심 서비스</div><div class="h3">ESG 리포트</div></div>
+      <div class="row between"><div class="txt">예상 예산</div><div class="h3">500~1000만원</div></div>
+      <div class="row between"><div class="txt">접수 상태</div><div class="pill">검토 대기</div></div>
+    </div>
+    <div class="row gap8">
+      <div class="wf-btn" onclick="location.hash='sc01'">메인으로 돌아가기</div>
+      <div class="wf-btn accent" onclick="location.hash='sc17'">스폰서십 상품 보기</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-17 스폰서십 상품 선택 ============ -->
+<div class="screen" id="sc17">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof · BUSINESS</div>
+    <div class="row gap8 center">
+      <div class="lang-toggle row"><div class="lang-opt active" data-lang="KR">KR</div><div class="lang-opt" data-lang="EN">EN</div></div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="pad32 col gap20">
+    <div class="h1">해양 복원 프로젝트 스폰서십</div>
+    <div class="txt">기업은 해양 복원 프로젝트를 후원하고, 검증된 환경 임팩트 데이터를 ESG 리포트와 브랜딩 자료로 활용할 수 있습니다.</div>
+
+    <div class="row gap16 wrap">
+      <div class="price-card">
+        <div class="label">Basic</div>
+        <div class="price">월/프로젝트 300만원~</div>
+        <ul>
+          <li>프로젝트 후원</li>
+          <li>기업 로고 노출</li>
+          <li>기본 성과 요약 제공</li>
+          <li>참여 시민 수 제공</li>
+        </ul>
+        <div class="wf-btn grow" style="text-align:center; margin-top:auto;" onclick="location.hash='sc18'">Basic 선택</div>
+      </div>
+
+      <div class="price-card recommend">
+        <div class="recommend-badge">추천</div>
+        <div class="label">Standard</div>
+        <div class="price">월/프로젝트 700만원~</div>
+        <ul>
+          <li>Basic 포함</li>
+          <li>ESG 데이터 리포트 제공</li>
+          <li>탄소 격리량/복원 면적/폐기물 수거량 제공</li>
+          <li>인증 배지 다운로드</li>
+        </ul>
+        <div class="wf-btn accent grow" style="text-align:center; margin-top:auto;" onclick="location.hash='sc18'">Standard 선택</div>
+      </div>
+
+      <div class="price-card">
+        <div class="label">Premium</div>
+        <div class="price">맞춤 견적</div>
+        <ul>
+          <li>Standard 포함</li>
+          <li>맞춤형 ESG 리포트</li>
+          <li>브랜딩 캠페인 페이지 제공</li>
+          <li>공공기관/지역 커뮤니티 연계</li>
+          <li>전담 매니저 배정</li>
+        </ul>
+        <div class="wf-btn grow" style="text-align:center; margin-top:auto;" onclick="location.hash='sc15'">Premium 문의</div>
+      </div>
+    </div>
+
+    <div class="wf-fill pad16 txt center" style="text-align:center;">※ 스폰서십은 탄소 크레딧 판매가 아니라 검증 가능한 ESG 커뮤니케이션 데이터 제공 서비스입니다.</div>
+  </div>
+</div>
+
+<!-- ============ SC-18 스폰서십 프로젝트 선택 ============ -->
+<div class="screen" id="sc18">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof · BUSINESS</div>
+    <div class="row gap8 center"><div class="lang-toggle row"><div class="lang-opt active" data-lang="KR">KR</div><div class="lang-opt" data-lang="EN">EN</div></div></div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="pad32 col gap20">
+    <div class="flow-steps">
+      <div class="flow-step done"><div class="num-circle">✓</div>상품 선택</div>
+      <div class="flow-step-sep"></div>
+      <div class="flow-step active"><div class="num-circle">2</div>프로젝트 선택</div>
+      <div class="flow-step-sep"></div>
+      <div class="flow-step"><div class="num-circle">3</div>신청 정보 입력</div>
+      <div class="flow-step-sep"></div>
+      <div class="flow-step"><div class="num-circle">4</div>결제/계약</div>
+    </div>
+
+    <div class="h2">후원할 프로젝트를 선택하세요</div>
+    <div class="row gap8 wrap">
+      <div class="wf-input" style="width:160px;">지역 선택</div>
+      <div class="pill choice-box" style="background:var(--gray2); font-weight:bold;">전체 활동</div>
+      <div class="pill choice-box">잘피 식재</div>
+      <div class="pill choice-box">해양 쓰레기 수거</div>
+      <div class="pill choice-box">갯벌 모니터링</div>
+      <div class="pill choice-box" style="background:var(--gray2); font-weight:bold; margin-left:auto;">모집중</div>
+      <div class="pill choice-box">진행중</div>
+    </div>
+
+    <div class="row gap16 wrap">
+      <div class="wf-card grow project-pick" style="min-width:300px; cursor:pointer;" onclick="pickProject(this,'고성 잘피밭 복원 캠페인')">
+        <div class="wf-img" style="height:120px;">프로젝트 이미지</div>
+        <div class="pad16 col gap8">
+          <div class="h3">고성 잘피밭 복원 캠페인</div>
+          <div class="txt">복원 목표 5ha · 진행률 62%</div>
+          <div class="txt">예상 탄소 격리량 3.2tCO₂/년 · 참여 시민 248명</div>
+          <div class="wf-btn solid" style="text-align:center;">선택</div>
+        </div>
+      </div>
+      <div class="wf-card grow project-pick" style="min-width:300px; cursor:pointer;" onclick="pickProject(this,'부산 해안 쓰레기 정화')">
+        <div class="wf-img" style="height:120px;">프로젝트 이미지</div>
+        <div class="pad16 col gap8">
+          <div class="h3">부산 해안 쓰레기 정화</div>
+          <div class="txt">수거 목표 5,000kg · 진행률 80%</div>
+          <div class="txt">참여 시민 412명</div>
+          <div class="wf-btn solid" style="text-align:center;">선택</div>
+        </div>
+      </div>
+      <div class="wf-card grow project-pick" style="min-width:300px; cursor:pointer;" onclick="pickProject(this,'여수 갯벌 모니터링')">
+        <div class="wf-img" style="height:120px;">프로젝트 이미지</div>
+        <div class="pad16 col gap8">
+          <div class="h3">여수 갯벌 모니터링</div>
+          <div class="txt">모니터링 구역 8ha · 진행률 35%</div>
+          <div class="txt">참여 시민 96명</div>
+          <div class="wf-btn solid" style="text-align:center;">선택</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wf-fill pad24 col gap8">
+      <div class="label">선택된 프로젝트</div>
+      <div class="h3" id="picked-project-name">고성 잘피밭 복원 캠페인</div>
+      <div class="txt">예상 제공 데이터: 탄소 격리량, 복원 면적, 참여 시민 수, ESG 리포트</div>
+      <div class="wf-btn accent" style="width:fit-content;" onclick="location.hash='sc19'">신청 정보 입력하기</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-19 스폰서십 신청 정보 입력 ============ -->
+<div class="screen" id="sc19">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof · BUSINESS</div>
+    <div class="row gap8 center"><div class="lang-toggle row"><div class="lang-opt active" data-lang="KR">KR</div><div class="lang-opt" data-lang="EN">EN</div></div></div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="pad32 col gap20">
+    <div class="flow-steps">
+      <div class="flow-step done"><div class="num-circle">✓</div>상품 선택</div>
+      <div class="flow-step-sep"></div>
+      <div class="flow-step done"><div class="num-circle">✓</div>프로젝트 선택</div>
+      <div class="flow-step-sep"></div>
+      <div class="flow-step active"><div class="num-circle">3</div>신청 정보 입력</div>
+      <div class="flow-step-sep"></div>
+      <div class="flow-step"><div class="num-circle">4</div>결제/계약</div>
+    </div>
+
+    <div class="h2">스폰서십 신청 정보</div>
+    <div class="row gap24">
+      <div class="col gap16 grow">
+        <div class="row gap16"><div class="wf-input grow">기업명</div><div class="wf-input grow">사업자등록번호</div></div>
+        <div class="row gap16"><div class="wf-input grow">담당자명</div><div class="wf-input grow">부서/직책</div></div>
+        <div class="row gap16"><div class="wf-input grow">이메일</div><div class="wf-input grow">연락처</div></div>
+        <div class="wf-input">세금계산서 발행 이메일</div>
+        <div class="wf-input">캠페인에 표시할 기업명</div>
+        <div class="wf-img" style="height:100px;">🖼 기업 로고 업로드</div>
+        <div class="wf-input" style="height:80px; align-items:flex-start; padding-top:10px;">요청사항</div>
+      </div>
+
+      <div class="sidebar col gap12" style="width:300px; border:1.5px solid var(--ink); padding:24px;">
+        <div class="h3">신청 요약</div>
+        <div class="divider2"></div>
+        <div class="row between txt"><div>선택 상품</div><div><b>Standard</b></div></div>
+        <div class="row between txt"><div>선택 프로젝트</div><div><b>고성 잘피밭 복원 캠페인</b></div></div>
+        <div class="row between txt"><div>예상 금액</div><div><b>7,000,000원</b></div></div>
+        <div class="divider2"></div>
+        <div class="label">제공 항목</div>
+        <div class="txt">· ESG 리포트<br>· 인증 배지<br>· 기업 로고 노출<br>· 프로젝트 성과 데이터</div>
+        <div class="wf-btn accent" style="text-align:center; margin-top:8px;" onclick="location.hash='sc20'">계약/결제 단계로 이동</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-20 결제/계약 요청 ============ -->
+<div class="screen" id="sc20">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof · BUSINESS</div>
+    <div class="row gap8 center"><div class="lang-toggle row"><div class="lang-opt active" data-lang="KR">KR</div><div class="lang-opt" data-lang="EN">EN</div></div></div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="pad32 col gap20" style="max-width:760px; margin:0 auto;">
+    <div class="flow-steps">
+      <div class="flow-step done"><div class="num-circle">✓</div>상품 선택</div>
+      <div class="flow-step-sep"></div>
+      <div class="flow-step done"><div class="num-circle">✓</div>프로젝트 선택</div>
+      <div class="flow-step-sep"></div>
+      <div class="flow-step done"><div class="num-circle">✓</div>신청 정보 입력</div>
+      <div class="flow-step-sep"></div>
+      <div class="flow-step active"><div class="num-circle">4</div>결제/계약</div>
+    </div>
+
+    <div class="h2">결제 및 계약 방식 선택</div>
+
+    <div class="wf-card pad24 col gap8">
+      <div class="row between txt"><div>상품</div><div>Standard Sponsorship</div></div>
+      <div class="row between txt"><div>프로젝트</div><div>고성 잘피밭 복원 캠페인</div></div>
+      <div class="row between txt"><div>금액</div><div>7,000,000원</div></div>
+      <div class="row between txt"><div>VAT</div><div>700,000원</div></div>
+      <div class="divider2"></div>
+      <div class="row between h3"><div>총 결제 금액</div><div>7,700,000원</div></div>
+    </div>
+
+    <div class="col gap8">
+      <div class="label">결제 방식 선택</div>
+      <div class="row gap12">
+        <div class="pay-card selected" onclick="selectPay(this)">💳<br>카드 결제</div>
+        <div class="pay-card" onclick="selectPay(this)">🏦<br>계좌이체</div>
+        <div class="pay-card" onclick="selectPay(this)">📄<br>계약서 검토 후 정산</div>
+      </div>
+    </div>
+
+    <div class="wf-fill pad16 txt">세금계산서 발행 정보: GREENERS 주식회사 / 사업자번호 123-45-67890 / billing@greeners.co.kr</div>
+
+    <div class="col gap8">
+      <div class="chk-row"><div class="chk-box checked"></div>서비스 이용약관 동의</div>
+      <div class="chk-row"><div class="chk-box checked"></div>개인정보 처리방침 동의</div>
+      <div class="chk-row"><div class="chk-box checked"></div>ESG 데이터 활용 범위 확인</div>
+    </div>
+
+    <div class="row gap8">
+      <div class="wf-btn accent grow" style="text-align:center;" onclick="location.hash='sc21'">결제 요청 완료</div>
+      <div class="wf-btn grow" style="text-align:center;" onclick="location.hash='sc21'">계약 검토 요청하기</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-21 스폰서십 신청 완료 ============ -->
+<div class="screen" id="sc21">
+  <div class="pad32 col gap24 center" style="max-width:600px; margin:0 auto; text-align:center; min-height:560px; justify-content:center;">
+    <div class="step-circle accent" style="width:56px; height:56px; font-size:24px; margin:0 auto;">✓</div>
+    <div class="h1">스폰서십 신청이 완료되었습니다</div>
+    <div class="txt">관리자 검토 후 계약 및 프로젝트 온보딩 절차가 진행됩니다.</div>
+
+    <div class="wf-card pad24 col gap8" style="width:100%; text-align:left;">
+      <div class="row between txt"><div>신청번호</div><div><b>SP-2026-0630-021</b></div></div>
+      <div class="row between txt"><div>기업명</div><div><b>GREENERS 주식회사</b></div></div>
+      <div class="row between txt"><div>선택 상품</div><div><b>Standard</b></div></div>
+      <div class="row between txt"><div>선택 프로젝트</div><div><b>고성 잘피밭 복원 캠페인</b></div></div>
+      <div class="row between txt"><div>결제/계약 방식</div><div><b>카드 결제</b></div></div>
+      <div class="row between txt"><div>상태</div><div class="pill">관리자 검토 대기</div></div>
+    </div>
+
+    <div class="wf-fill pad16 col gap8" style="width:100%; text-align:left;">
+      <div class="label">다음 단계 안내</div>
+      <div class="txt">1. 관리자 신청 검토<br>2. 계약/결제 확인<br>3. 프로젝트 스폰서 등록<br>4. ESG 대시보드 활성화</div>
+    </div>
+
+    <div class="row gap8">
+      <div class="wf-btn" onclick="location.hash='sc11'">기업 대시보드로 이동</div>
+      <div class="wf-btn accent" onclick="location.hash='sc22'">ESG 리포트 샘플 보기</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-22 ESG 리포트 미리보기 ============ -->
+<div class="screen" id="sc22">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof · BUSINESS</div>
+    <div class="row gap8 center"><div class="lang-toggle row"><div class="lang-opt active" data-lang="KR">KR</div><div class="lang-opt" data-lang="EN">EN</div></div></div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="pad32 col gap20">
+    <div class="row between center">
+      <div class="col gap4">
+        <div class="h1">ESG Impact Report Preview</div>
+        <div class="txt">기간: 2026 Q2</div>
+      </div>
+      <div class="row gap8">
+        <div class="wf-btn accent">PDF 다운로드</div>
+        <div class="wf-btn">브랜딩 자료 다운로드</div>
+      </div>
+    </div>
+
+    <div class="row gap16">
+      <div class="stat"><div class="num">8.4ha</div><div class="txt">복원 면적</div></div>
+      <div class="stat"><div class="num">3.6t</div><div class="txt">탄소 격리량 (tCO₂/년)</div></div>
+      <div class="stat"><div class="num">1,240kg</div><div class="txt">수거 폐기물</div></div>
+      <div class="stat"><div class="num">680명</div><div class="txt">참여 시민</div></div>
+    </div>
+
+    <div class="wf-card pad24 col gap16">
+      <div class="h3">1. 프로젝트 개요</div>
+      <div class="wf-box pad16 txt">고성·부산·여수 3개 해역에서 진행된 시민 참여형 해양 복원 프로젝트 요약 텍스트 영역</div>
+      <div class="h3">2. 데이터 수집 방식</div>
+      <div class="wf-box pad16 txt">QR 기반 시민 참여, GPS·사진 증거 자동 수집 방식 설명 텍스트 영역</div>
+      <div class="h3">3. MRV 검증 절차</div>
+      <div class="wf-box pad16 txt">시민 입력 → 위성 검증 → 드론 샘플링 → GIS 교차검증 → 최종 데이터셋 5단계 절차 설명</div>
+      <div class="h3">4. 환경 임팩트 결과</div>
+      <div class="wf-img" style="height:140px;">분기별 임팩트 결과 차트</div>
+      <div class="h3">5. ESG 커뮤니케이션 활용 문구</div>
+      <div class="wf-box pad16 txt">기업 지속가능경영보고서·홈페이지 등에 인용 가능한 문구 영역</div>
+    </div>
+
+    <div class="row gap8 wrap">
+      <div class="pill accent">Satellite Verified</div>
+      <div class="pill accent">GIS Cross-Checked</div>
+      <div class="pill accent">Citizen Action Logged</div>
+    </div>
+
+    <div class="row gap8">
+      <div class="wf-btn accent">PDF 다운로드</div>
+      <div class="wf-btn">브랜딩 자료 다운로드</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-24 프로젝트 등록 ============ -->
+<div class="screen" id="sc24">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof · ADMIN</div>
+    <div class="row gap8 center"><div class="lang-toggle row"><div class="lang-opt active" data-lang="KR">KR</div><div class="lang-opt" data-lang="EN">EN</div></div></div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="pad32 col gap20">
+    <div class="h1">신규 프로젝트 등록</div>
+    <div class="row gap24">
+      <div class="col gap16 grow">
+        <div class="wf-input">프로젝트명</div>
+        <div class="col gap8">
+          <div class="label">프로젝트 유형</div>
+          <div class="row gap8 wrap">
+            <div class="pill choice-box" style="background:var(--gray2); font-weight:bold;">잘피 식재</div>
+            <div class="pill choice-box">해양 쓰레기 수거</div>
+            <div class="pill choice-box">갯벌 모니터링</div>
+            <div class="pill choice-box">기타</div>
+          </div>
+        </div>
+        <div class="wf-input">지역</div>
+        <div class="wf-map" style="height:180px;">지도에서 생태 구역 지정 (클릭/드래그)</div>
+        <div class="row gap16">
+          <div class="wf-input grow">모집 시작일</div>
+          <div class="wf-input grow">모집 종료일</div>
+        </div>
+        <div class="wf-input">프로젝트 진행 기간</div>
+        <div class="row gap16">
+          <div class="wf-input grow">목표 복원 면적 (ha)</div>
+          <div class="wf-input grow">목표 참여자 수 (명)</div>
+        </div>
+        <div class="wf-input">예상 탄소 격리량 (tCO₂/년)</div>
+        <div class="wf-img" style="height:100px;">🖼 대표 이미지 업로드</div>
+        <div class="wf-input" style="height:80px; align-items:flex-start; padding-top:10px;">프로젝트 설명</div>
+        <div class="row gap24">
+          <div class="col gap8">
+            <div class="label">공개 여부</div>
+            <div class="row gap8"><div class="pill choice-box" style="background:var(--gray2); font-weight:bold;">공개</div><div class="pill choice-box">비공개</div></div>
+          </div>
+          <div class="col gap8">
+            <div class="label">참여 승인 방식</div>
+            <div class="row gap8"><div class="pill choice-box" style="background:var(--gray2); font-weight:bold;">자동 승인</div><div class="pill choice-box">관리자 승인</div></div>
+          </div>
+        </div>
+        <div class="wf-btn accent" style="width:fit-content;" onclick="location.hash='sc08'">프로젝트 등록하기</div>
+      </div>
+
+      <div class="sidebar col gap8" style="width:300px; border:1.5px solid var(--ink); padding:24px;">
+        <div class="label">미리보기</div>
+        <div class="wf-card">
+          <div class="wf-img" style="height:120px;">대표 이미지</div>
+          <div class="pad16 col gap8">
+            <div class="row between"><div class="h3">신규 프로젝트명</div><div class="pill accent">모집중</div></div>
+            <div class="txt">참여자 0명 · 진행률 0%</div>
+            <div class="progress-bar"><div class="fill" style="width:0%;"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SC-25 관리자 검증 상세 ============ -->
+<div class="screen" id="sc25">
+  <div class="header row between center">
+    <div class="logo">🌊 OceanProof · ADMIN</div>
+    <div class="back-link txt" style="text-decoration:underline; cursor:pointer;" onclick="location.hash='sc14'">← 관리자 페이지</div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="pad32 col gap20">
+    <div class="h1">활동 검증 상세</div>
+    <div class="row gap16">
+      <div class="col gap8" style="width:300px;">
+        <div class="label">제출 사진</div>
+        <div class="wf-img" style="height:220px;">사진 크게 보기</div>
+        <div class="row gap8">
+          <div class="wf-img grow" style="height:60px;">사진1</div>
+          <div class="wf-img grow" style="height:60px;">사진2</div>
+          <div class="wf-img grow" style="height:60px;">사진3</div>
+        </div>
+      </div>
+
+      <div class="col gap8 grow">
+        <div class="label">활동 정보</div>
+        <div class="wf-map" style="height:160px;">제출 위치 지도</div>
+        <div class="wf-card pad16 col gap8">
+          <div class="row between txt"><div>GPS 좌표</div><div>34.xxxx, 128.xxxx</div></div>
+          <div class="row between txt"><div>촬영 시각</div><div>2026-06-28 14:22</div></div>
+          <div class="row between txt"><div>제출 시각</div><div>2026-06-28 14:25</div></div>
+          <div class="row between txt"><div>기기 정보</div><div>iPhone 15 / Safari</div></div>
+          <div class="row between txt"><div>활동 유형</div><div>잘피 식재</div></div>
+          <div class="row between txt"><div>시민 메모</div><div>해안가 좌측 구역 30주 식재</div></div>
+        </div>
+      </div>
+
+      <div class="sidebar col gap16" style="width:280px; border:1.5px solid var(--ink); padding:24px;">
+        <div class="h3">MRV 검증 상태</div>
+        <div class="row between txt"><div>시민 입력</div><div class="pill accent">완료</div></div>
+        <div class="row between txt"><div>위성 검증</div><div class="pill accent">완료</div></div>
+        <div class="row between txt"><div>드론 샘플링</div><div class="pill">진행중</div></div>
+        <div class="row between txt"><div>GIS 교차검증</div><div class="pill">대기</div></div>
+        <div class="divider2"></div>
+        <div class="txt">이상값 감지: 없음</div>
+        <div class="divider2"></div>
+        <div class="row gap8">
+          <div class="wf-btn solid grow" style="text-align:center;" onclick="location.hash='sc14'">승인</div>
+          <div class="wf-btn grow" style="text-align:center;" onclick="location.hash='sc14'">반려</div>
+        </div>
+        <div class="wf-btn grow" style="text-align:center;" onclick="location.hash='sc14'">추가 확인 요청</div>
+        <div class="wf-input" style="height:60px; align-items:flex-start; padding-top:8px;">반려/추가확인 사유 입력</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 챗봇 플로팅 UI (SC-26) · 모든 화면 공통 ============ -->
+<div class="chat-fab" id="chat-fab" onclick="toggleChat()">💬 OceanProof Assistant</div>
+<div class="chat-window" id="chat-window">
+  <div class="chat-header">
+    <div>OceanProof Assistant <span class="small" style="color:#ccc;">SC-26</span></div>
+    <div class="chat-close" onclick="toggleChat()">✕</div>
+  </div>
+  <div class="chat-body" id="chat-body">
+    <div class="chat-bubble">안녕하세요! 어떤 사용자이신가요?</div>
+    <div class="chat-userselect">
+      <div class="chat-pill active" data-user="citizen" onclick="selectChatUser(this)">시민 참여자</div>
+      <div class="chat-pill" data-user="biz" onclick="selectChatUser(this)">기업 ESG 담당자</div>
+      <div class="chat-pill" data-user="gov" onclick="selectChatUser(this)">공공기관 담당자</div>
+    </div>
+    <div class="chat-suggest" id="chat-suggest"></div>
+  </div>
+  <div class="chat-input-row">
+    <div class="chat-input" contenteditable="true" data-ph="메시지를 입력하세요"></div>
+    <button class="chat-send" onclick="chatSend()">전송</button>
+  </div>
+</div>
+
+<script>
+function selectChoice(el){
+  var group = el.parentElement.querySelectorAll('.choice-box');
+  group.forEach(function(item){
+    item.style.background = '#fff';
+    item.style.fontWeight = 'normal';
+  });
+  el.style.background = 'var(--gray2)';
+  el.style.fontWeight = 'bold';
+}
+document.querySelectorAll('.choice-box').forEach(function(el){
+  el.addEventListener('click', function(){ selectChoice(el); });
+});
+
+document.querySelectorAll('.tabbtn').forEach(function(el){
+  el.addEventListener('click', function(){
+    var group = el.parentElement.querySelectorAll('.tabbtn');
+    group.forEach(function(item){ item.classList.remove('active'); });
+    el.classList.add('active');
+  });
+});
+
+/* ---- 사이드바 대시보드 탭 전환 (SC-10/11/14 등) · 사이드바+헤더 유지, 콘텐츠 영역만 교체 ---- */
+function showTab(screenId, tab){
+  var screen = document.getElementById(screenId);
+  screen.querySelectorAll('.sidebar .item[data-tab]').forEach(function(item){
+    item.classList.toggle('active', item.dataset.tab === tab);
+  });
+  screen.querySelectorAll('.tab-panel').forEach(function(panel){
+    panel.style.display = (panel.dataset.tab === tab) ? '' : 'none';
+  });
+}
+
+/* ---- 시민 모드 / 관리자 모드 전환 ---- */
+function toggleMode(){
+  var body = document.body;
+  var btn = document.getElementById('mode-toggle');
+  if(body.classList.contains('mode-admin')){
+    body.classList.remove('mode-admin');
+    body.classList.add('mode-citizen');
+    btn.textContent = '🛠 관리자 모드로 전환';
+    location.hash = 'sc10';
+  } else {
+    body.classList.remove('mode-citizen');
+    body.classList.add('mode-admin');
+    btn.textContent = '🙋 시민 모드로 전환';
+    location.hash = 'sc14';
+  }
+}
+
+/* ---- 결제 방식 카드 선택 (SC-20) ---- */
+function selectPay(el){
+  var group = el.parentElement.querySelectorAll('.pay-card');
+  group.forEach(function(item){ item.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+/* ---- 스폰서십 프로젝트 선택 (SC-18) ---- */
+function pickProject(el, name){
+  document.querySelectorAll('.project-pick').forEach(function(item){
+    item.style.outline = 'none';
+  });
+  el.style.outline = '2px solid var(--ink)';
+  document.getElementById('picked-project-name').textContent = name;
+}
+
+/* ---- 언어 전환 (전 화면 공통 · 텍스트 노드 단위 전체 번역) ---- */
+var koToEn = {"(미획득)": "(Not earned)", "(전국 진행 프로젝트 위치 시각화)": "(Map of active projects nationwide)", "(획득)": "(Earned)", "1,820명": "1,820 people", "1. 관리자 신청 검토": "1. Admin reviews application", "1. 프로젝트 개요": "1. Project Overview", "1000~3000만원": "KRW 10M–30M", "10회 참여 배지": "10-time Participation Badge", "1단계 · 시민 입력": "Step 1 · Citizen Input", "2,000명": "2,000 people", "2. 계약/결제 확인": "2. Confirm contract/payment", "2. 데이터 수집 방식": "2. Data Collection Method", "2026년 2분기 ESG 성과": "Q2 2026 ESG Performance", "248명": "248 people", "2단계 · 위성 검증": "Step 2 · Satellite Verification", "3. MRV 검증 절차": "3. MRV Verification Process", "3. 프로젝트 스폰서 등록": "3. Register as project sponsor", "3/5 드론 검증중": "3/5 Drone verification in progress", "3000만원 이상": "Over KRW 30M", "3단계 · 드론 샘플링 (진행중)": "Step 3 · Drone Sampling (In progress)", "4. ESG 대시보드 활성화": "4. Activate ESG dashboard", "4. 환경 임팩트 결과": "4. Environmental Impact Results", "4단계 · GIS 교차검증": "Step 4 · GIS Cross-verification", "5. ESG 커뮤니케이션 활용 문구": "5. ESG Communication Copy", "500~1000만원": "KRW 5M–10M", "500만원 미만": "Under KRW 5M", "5개": "5", "5단계 · 최종 데이터셋 생성": "Step 5 · Final Dataset Generated", "680명": "680 people", "7,000,000원": "KRW 7,000,000", "7,700,000원": "KRW 7,700,000", "700,000원": "KRW 700,000", "Basic 선택": "Select Basic", "Basic 포함": "Basic includes", "ESG 데이터 리포트 제공": "ESG data report provided", "ESG 데이터 활용 범위 확인": "Confirm ESG data usage scope", "ESG 리포트": "ESG Report", "ESG 리포트 샘플 보기": "View sample ESG report", "ESG 보고 및 정책 평가용 집계 데이터 생성 예정": "Aggregated data for ESG reporting and policy evaluation will be generated", "ESG 활용": "ESG Utilization", "ESG(기업)": "ESG (Business)", "ESG리포트": "ESG Report", "EU 수출기업": "EU-exporting company", "GIS 교차검증": "GIS Cross-verification", "GIS 연동 상태": "GIS Integration Status", "GPS 좌표": "GPS Coordinates", "GPS 좌표, 타임스탬프 사진, 현장 활동 로그 — 접수 완료": "GPS coordinates, timestamped photo, field activity log — received", "GPS·사진·활동 로그가 자동 수집됩니다": "GPS, photos, and activity logs are collected automatically", "GREENERS 주식회사": "GREENERS Inc.", "Google로 계속하기": "Continue with Google", "Kakao로 계속하기": "Continue with Kakao", "MRV 검증": "MRV Verification", "MRV 검증 상태": "MRV Verification Status", "OceanProof 웹 플랫폼 - 화면설계서 (와이어프레임)": "OceanProof Web Platform - Wireframe Spec", "OceanProof는 이렇게 작동합니다": "How OceanProof Works", "OceanProof는 해양 복원 활동을 검증 가능한 ESG 데이터로 전환하여 기업과 공공기관의 지속가능성 보고를 지원합니다.": "OceanProof converts ocean restoration activities into verifiable ESG data, supporting sustainability reporting for businesses and public institutions.", "PDF 다운로드": "Download PDF", "Premium 문의": "Contact for Premium", "QR 기반 시민 참여, GPS·사진 증거 자동 수집 방식 설명 텍스트 영역": "Text area explaining QR-based citizen participation and automatic GPS/photo evidence collection", "QR 스캔으로 바로 활동 참여, 배지·인증서 획득": "Join instantly by scanning a QR code, and earn badges and certificates", "QR로 참여": "Join via QR", "QR로 참여 시작하기": "Start participating via QR", "QR코드를 스캔하면 앱 설치 없이": "Scan the QR code — no app install needed", "SC-01 · 플랫폼 소개 (Hero)": "SC-01 · Platform Intro (Hero)", "SC-02 · 이용 대상 선택": "SC-02 · User Type Selection", "SC-06a · QR 스캔 진입": "SC-06a · QR Scan Entry", "SC-06b · 참여 프로젝트 / 활동 선택": "SC-06b · Select Project / Activity", "SC-06c · GPS + 사진 증거 제출": "SC-06c · Submit GPS + Photo Evidence", "SC-07 · 보상 및 인증": "SC-07 · Reward & Certification", "SC-13 · 5단계 순차 검증 필터": "SC-13 · 5-Step Sequential Verification Filter", "SC-27 · 작동 방식": "SC-27 · How It Works", "SNS 공유하기": "Share on Social Media", "Scope 3 탄소 감축 기여 데이터:": "Scope 3 carbon reduction contribution data:", "Sentinel 위성 영상으로 잘피밭 공간 변화 탐지 완료": "Seagrass bed spatial change detected via Sentinel satellite imagery", "Standard 선택": "Select Standard", "Standard 포함": "Standard includes", "· ESG 리포트": "· ESG Report", "· 기업 로고 노출": "· Company logo exposure", "· 인증 배지": "· Certification badge", "· 파트너 혜택과 연계됩니다": "· Linked to partner benefits", "· 프로젝트 성과 데이터": "· Project performance data", "※ 스폰서십은 탄소 크레딧 판매가 아니라 검증 가능한 ESG 커뮤니케이션 데이터 제공 서비스입니다.": "※ Sponsorship is not a carbon credit sale, but a service providing verifiable ESG communication data.", "※ 시민 데이터는 최종 출력이 아닌 초기 입력값으로 처리됩니다.": "※ Citizen data is treated as an initial input, not a final output.", "※ 시민의 경우 계정 없이도 QR 참여 가능 (간편 참여)": "※ Citizens can participate via QR without an account (simple participation)", "← 관리자 페이지": "← Admin Page", "← 메인으로": "← Back to Main", "← 프로젝트 목록": "← Project List", "✔ ESG 공시용 PDF 리포트": "✔ PDF report for ESG disclosure", "✔ 검증된 환경 임팩트 데이터": "✔ Verified environmental impact data", "✔ 시민 참여 데이터 요약": "✔ Citizen participation data summary", "✔ 캠페인용 인증 배지/로고": "✔ Certification badge/logo for campaigns", "✔ 프로젝트별 성과 대시보드": "✔ Per-project performance dashboard", "간단 메모 (선택)": "Brief note (optional)", "개인정보 처리방침 동의": "Agree to Privacy Policy", "개인정보처리방침": "Privacy Policy", "갯벌 모니터링": "Tidal Flat Monitoring", "검증 단계": "Verification Stage", "검증 단계별 처리 현황": "Processing Status by Verification Stage", "검증 상태": "Verification Status", "검증 완료": "Verified", "검증 절차(위성·드론·GIS) 완료 후 인증서가 발급됩니다. 약 3~5일 소요": "A certificate is issued once verification (satellite, drone, GIS) is complete. Takes about 3–5 days", "검증된 환경 데이터로 ESG 공시 리포트 받기": "Get an ESG disclosure report from verified environmental data", "검증중": "Verifying", "검증현황": "Verification Status", "검토 대기": "Pending Review", "결제": "Payment", "결제 및 계약 방식 선택": "Select Payment & Contract Method", "결제 방식 선택": "Select Payment Method", "결제 요청 완료": "Payment Request Complete", "결제/계약": "Payment/Contract", "결제/계약 방식": "Payment/Contract Method", "계약 검토 요청하기": "Request Contract Review", "계약/결제 단계로 이동": "Go to Contract/Payment Step", "계약서 검토 후 정산": "Settled after contract review", "계정 설정": "Account Settings", "계좌이체": "Bank Transfer", "고성 잘피밭 복원": "Goseong Seagrass Bed Restoration", "고성 잘피밭 복원 캠페인": "Goseong Seagrass Bed Restoration Campaign", "고성·부산·여수 3개 해역에서 진행된 시민 참여형 해양 복원 프로젝트 요약 텍스트 영역": "Text area summarizing citizen-participation ocean restoration projects in Goseong, Busan, and Yeosu", "고성군청": "Goseong County Office", "고해상도 현장 조사로 밀도·식물 상태 검증 진행중": "Verifying density and plant condition via high-resolution field survey", "공개": "Public", "공개 여부": "Visibility", "공공 GIS 데이터셋과 연계하여 이상값 탐지 예정": "Anomaly detection planned in conjunction with public GIS datasets", "공공 프로젝트 운영": "Public Project Operations", "공공기관": "Public Institution", "공공기관 담당자": "Public Institution Officer", "공공기관/지역 커뮤니티 연계": "Public institution / local community partnership", "공지사항 관리": "Notice Management", "관리": "Manage", "관리자": "Admin", "관리자 검토 대기": "Awaiting Admin Review", "관리자 검토 후 계약 및 프로젝트 온보딩 절차가 진행됩니다.": "After admin review, the contract and project onboarding process proceeds.", "관리자 로그아웃": "Admin Log Out", "관리자 승인": "Admin Approval", "관심 서비스": "Services of Interest", "관심 서비스 선택 (복수 선택 가능)": "Select services of interest (multiple selection allowed)", "관할 진행 프로젝트": "Projects Under Jurisdiction", "금액": "Amount", "기간: 2026 Q2": "Period: Q2 2026", "기관 유형 선택": "Select Institution Type", "기관/기업명": "Institution/Company Name", "기관명": "Institution Name", "기기 정보": "Device Info", "기본 성과 요약 제공": "Basic performance summary provided", "기업 ESG 담당자": "Corporate ESG Officer", "기업 대시보드로 이동": "Go to Business Dashboard", "기업 로고 A": "Company Logo A", "기업 로고 B": "Company Logo B", "기업 로고 노출": "Company Logo Exposure", "기업 스폰서십 관리": "Corporate Sponsorship Management", "기업 지속가능경영보고서·홈페이지 등에 인용 가능한 문구 영역": "Text area with copy quotable in corporate sustainability reports/websites", "기업/공공기관이 ESG 리포트로 활용합니다": "Businesses and public institutions use it as an ESG report", "기업/기관 담당자": "Business/Institution Officer", "기업/기관 도입 문의": "Business/Institution Inquiry", "기업·기관 도입 문의": "Business/Institution Inquiry", "기업명": "Company Name", "기업은 해양 복원 프로젝트를 후원하고, 검증된 환경 임팩트 데이터를 ESG 리포트와 브랜딩 자료로 활용할 수 있습니다.": "Businesses can sponsor ocean restoration projects and use verified environmental impact data in ESG reports and branding materials.", "기타": "Other", "김해양": "Kim Hae-yang", "김해양 님": "Kim Hae-yang", "날짜": "Date", "누적 참여 시민": "Cumulative Participating Citizens", "누적 활동 12회 · 320포인트 · 배지 4개": "12 activities · 320 points · 4 badges", "누적 활동 포인트:": "Cumulative Activity Points:", "다른 프로젝트 참여하기": "Join Another Project", "다운로드": "Download", "다음 단계 안내": "Next Steps", "달성률": "Achievement Rate", "담당자가 입력하신 연락처로 2~3영업일 이내에 연락드립니다.": "Our team will contact you at the number provided within 2–3 business days.", "담당자명": "Contact Person", "대기": "Pending", "대기업": "Large Enterprise", "대시보드": "Dashboard", "대시보드(공공)": "Dashboard (Public)", "대표 이미지": "Main Image", "데이터 수집": "Data Collection", "데이터 패키지": "Data Package", "도입 문의": "Inquiry", "도입 후 제공되는 것": "What You'll Get", "도입문의": "Inquiry", "드론 샘플링": "Drone Sampling", "로그아웃": "Log Out", "로그인": "Log In", "마이페이지": "My Page", "마이페이지로 이동": "Go to My Page", "맞춤 견적": "Custom Quote", "맞춤형 ESG 리포트": "Customized ESG Report", "메인으로 돌아가기": "Back to Main", "모니터링": "Monitoring", "모니터링 구역 8ha · 진행률 35%": "Monitoring area 8ha · 35% progress", "모니터링 기록": "Monitoring Record", "모집 시작일": "Recruitment Start Date", "모집 종료일": "Recruitment End Date", "모집중": "Recruiting", "목록 더보기": "View More", "목표": "Goal", "목표 복원 면적 (ha)": "Target Restoration Area (ha)", "목표 참여자 수 (명)": "Target Number of Participants", "문의 내용을 입력해주세요": "Please enter your inquiry", "문의 제출하기": "Submit Inquiry", "문의가 접수되었습니다": "Your Inquiry Has Been Received", "문의하기": "Contact Us", "미리보기": "Preview", "미정": "TBD", "미획득": "Not Earned", "바로 이 화면이 열립니다": "This screen opens directly", "박바다": "Park Ba-da", "반려": "Reject", "반려/추가확인 사유 입력": "Enter reason for rejection/additional check", "반영 가능": "Can be reflected", "발급된 인증서": "Issued Certificate", "배지 · 인증서": "Badges & Certificates", "복원 면적": "Restoration Area", "복원 면적 기여": "Restoration Area Contribution", "복원 목표 5ha · 진행률 62%": "Restoration goal 5ha · 62% progress", "부산 해안 쓰레기 정화": "Busan Coastal Cleanup", "부산 해안 정화": "Busan Coastal Cleanup", "부서/직책": "Department/Title", "분기별 임팩트 결과 차트": "Quarterly Impact Results Chart", "브랜딩 자료": "Branding Materials", "브랜딩 자료 다운로드": "Download Branding Materials", "브랜딩 캠페인": "Branding Campaign", "브랜딩 캠페인 페이지 제공": "Branding campaign page provided", "브랜딩 캠페인용 인증 뱃지·로고": "Certification badge/logo for branding campaigns", "비공개": "Private", "비밀번호": "Password", "사업자등록번호": "Business Registration Number", "사용자 관리": "User Management", "사용자 유형": "User Type", "사진 크게 보기": "View Larger Photo", "사진1": "Photo 1", "사진2": "Photo 2", "사진3": "Photo 3", "상세": "Details", "상태": "Status", "상태: 진행중 (2026.05 ~ 2026.11)": "Status: In progress (May 2026 – Nov 2026)", "상품": "Package", "상품 선택": "Select Package", "서비스 상태": "Service Status", "서비스 이용약관 동의": "Agree to Terms of Service", "선택": "Select", "선택 상품": "Selected Package", "선택 프로젝트": "Selected Project", "선택된 프로젝트": "Selected Project", "세금계산서 발행 이메일": "Tax Invoice Email", "세금계산서 발행 정보: GREENERS 주식회사 / 사업자번호 123-45-67890 / billing@greeners.co.kr": "Tax invoice info: GREENERS Inc. / Business No. 123-45-67890 / billing@greeners.co.kr", "수거 목표 5,000kg · 진행률 80%": "Collection goal 5,000kg · 80% progress", "수거 폐기물": "Waste Collected", "스마트폰 · 태블릿 · PC 등 인터넷 접속 기기 모두 지원": "Supports smartphones, tablets, PCs, and other internet-connected devices", "스폰서 기업": "Sponsoring Company", "스폰서 프로젝트": "Sponsored Projects", "스폰서 프로젝트별 기여도 (차트)": "Contribution by Sponsored Project (Chart)", "스폰서십": "Sponsorship", "스폰서십 목록 보기": "View Sponsorship List", "스폰서십 상품 보기": "View Sponsorship Packages", "스폰서십 신청 정보": "Sponsorship Application Info", "스폰서십 신청이 완료되었습니다": "Sponsorship Application Complete", "승인": "Approve", "승인 방식: 자동 승인": "Approval method: Automatic", "시민": "Citizen", "시민 메모": "Citizen Notes", "시민 입력": "Citizen Input", "시민 입력 → 위성 검증 → 드론 샘플링 → GIS 교차검증 → 최종 데이터셋 5단계 절차 설명": "Description of the 5-step process: Citizen Input → Satellite Verification → Drone Sampling → GIS Cross-verification → Final Dataset", "시민 참여 인원": "Number of Participating Citizens", "시민 참여자": "Citizen Participant", "시민의 해양 복원 참여를,": "Turning Citizen Ocean Restoration", "시민이 QR로 해양 복원 활동에 참여합니다": "Citizens join ocean restoration activities via QR", "신규 프로젝트 등록": "Register New Project", "신규 프로젝트명": "New Project Name", "신청 요약": "Application Summary", "신청 정보 입력": "Enter Application Info", "신청 정보 입력하기": "Enter Application Info", "신청번호": "Application No.", "쓰레기 수거": "Waste Collection", "안녕하세요! 어떤 사용자이신가요?": "Hello! What type of user are you?", "어떤 목적으로 방문하셨나요?": "What brings you here today?", "여수 갯벌 모니터링": "Yeosu Tidal Flat Monitoring", "연간 KPI 달성률": "Annual KPI Achievement Rate", "연락처": "Contact Number", "예상 금액": "Estimated Amount", "예상 예산": "Estimated Budget", "예상 예산 선택": "Select Estimated Budget", "예상 제공 데이터: 탄소 격리량, 복원 면적, 참여 시민 수, ESG 리포트": "Expected data provided: carbon sequestration, restoration area, number of participating citizens, ESG report", "예상 탄소 격리량 (tCO₂/년)": "Estimated Carbon Sequestration (tCO₂/yr)", "예상 탄소 격리량 3.2tCO₂/년 · 참여 시민 248명": "Estimated carbon sequestration 3.2tCO₂/yr · 248 participating citizens", "예상 탄소 기여량": "Estimated Carbon Contribution", "완료": "Complete", "요청사항": "Requests", "월/프로젝트 300만원~": "From KRW 3M/project/month", "월/프로젝트 700만원~": "From KRW 7M/project/month", "월별 탄소 격리량 추이 (차트)": "Monthly Carbon Sequestration Trend (Chart)", "월별 활동 제출 건수 추이": "Monthly Activity Submission Trend", "위도/경도: 자동 수집됨": "Latitude/Longitude: Collected automatically", "위성 API 연동 상태": "Satellite API Integration Status", "위성 검증": "Satellite Verification", "위성·드론·GIS 기반으로 데이터를 검증합니다": "Data is verified using satellite, drone, and GIS", "위성·드론·GIS 복합 검증을 통해 시민 참여 데이터를 신뢰할 수 있는 환경 데이터로 전환하는 통합 디지털 플랫폼입니다.": "An integrated digital platform that converts citizen participation into trusted environmental data through satellite, drone, and GIS verification.", "위치 자동 인식됨": "Location detected automatically", "이메일": "Email", "이상값 감지: 없음": "Anomaly detected: None", "이용약관": "Terms of Service", "인증 배지 다운로드": "Download Certification Badge", "인증서 PDF 다운로드": "Download Certificate PDF", "자동 승인": "Automatic Approval", "자동 지오태깅 · 타임스탬프 적용": "Automatic geotagging and timestamping applied", "잘피 식재": "Seagrass Planting", "잘피 식재 배지": "Seagrass Planting Badge", "잘피밭(해초지) 생태 구역 지정 후 시민 참여형 식재 및 모니터링을 진행하는 프로젝트입니다.": "A project that designates a seagrass bed ecological zone, then carries out citizen-participation planting and monitoring.", "전담 매니저 배정": "Dedicated Manager Assigned", "전송": "Send", "전체": "All", "전체 현황 모니터링": "Overall Status Monitoring", "전체 활동": "All Activities", "접수 상태": "Reception Status", "정상": "Normal", "정책 KPI 추적": "Policy KPI Tracking", "정책 성과 KPI 추적": "Policy Performance KPI Tracking", "정화 활동": "Cleanup Activity", "정화 활동 배지": "Cleanup Activity Badge", "제공 항목": "Items Provided", "제출 사진": "Submitted Photo", "제출 시각": "Submission Time", "제출 위치 지도": "Submission Location Map", "조회": "View", "준비중": "Coming Soon", "지금 참여하기": "Join Now", "지도에서 생태 구역 지정 (클릭/드래그)": "Designate ecological zone on the map (click/drag)", "지방자치단체": "Local Government", "지역": "Region", "지역 검색": "Search Region", "지역 선택": "Select Region", "지역 성과 지도": "Regional Performance Map", "지역별 복원 성과 지도 시각화 (Leaflet.js)": "Regional restoration performance map visualization (Leaflet.js)", "지역별 해양 복원 성과": "Regional Ocean Restoration Performance", "지정 생태 구역 지도 (Leaflet.js)": "Designated Ecological Zone Map (Leaflet.js)", "지표": "Metric", "진행중": "In Progress", "진행중 스폰서십: 6건 · 이번 분기 집행 예산: 4,200만원": "Active sponsorships: 6 · This quarter budget: KRW 42M", "참여 방법": "How to Participate", "참여 승인 방식": "Approval Method", "참여 시민": "Participating Citizens", "참여 시민 412명": "412 Participating Citizens", "참여 시민 96명": "96 Participating Citizens", "참여 시민 수 제공": "Number of participating citizens provided", "참여 시민 현황": "Participating Citizens Status", "참여 프로젝트": "Projects Joined", "참여(QR)": "Join (QR)", "참여자 0명 · 진행률 0%": "0 participants · 0% progress", "참여자 248명 · 진행률 62%": "248 participants · 62% progress", "참여자 412명 · 진행률 80%": "412 participants · 80% progress", "참여자 96명 · 진행률 35%": "96 participants · 35% progress", "참여하기": "Join", "총 결제 금액": "Total Payment Amount", "촬영 시각": "Photo Time", "촬영 시각: 자동 수집됨": "Photo time: Collected automatically", "최근 활동 이력": "Recent Activity History", "추가 확인 요청": "Request Additional Check", "추천": "Recommended", "측정 가능한 ESG 자산으로": "into Measurable ESG Assets", "카드 결제": "Card Payment", "캠페인에 표시할 기업명": "Company Name for Campaign Display", "탄소 격리량": "Carbon Sequestration", "탄소 격리량 (tCO₂/년)": "Carbon Sequestration (tCO₂/yr)", "탄소 격리량/복원 면적/폐기물 수거량 제공": "Carbon sequestration / restoration area / waste collected provided", "프로젝트": "Project", "프로젝트 관리": "Project Management", "프로젝트 대표 이미지": "Project Main Image", "프로젝트 등록하기": "Register Project", "프로젝트 선택": "Select Project", "프로젝트 설명": "Project Description", "프로젝트 스폰서십": "Project Sponsorship", "프로젝트 유형": "Project Type", "프로젝트 이미지": "Project Image", "프로젝트 진행 기간": "Project Duration", "프로젝트 후원": "Project Sponsorship", "프로젝트등록": "Register Project", "프로젝트명": "Project Name", "프로필": "Profile", "해안가 좌측 구역 30주 식재": "30 seedlings planted in the left coastal zone", "해양 복원 면적": "Ocean Restoration Area", "해양 복원 프로젝트": "Ocean Restoration Project", "해양 복원 프로젝트 스폰서십": "Ocean Restoration Project Sponsorship", "해양 복원 프로젝트 운영 및 정책 성과 관리": "Ocean restoration project operations and policy performance management", "해양 복원 현장 이미지": "Ocean Restoration Site Image", "해양 쓰레기 수거": "Marine Debris Collection", "해양 폐기물 수거": "Marine Waste Collection", "현장 QR코드를 스캔하거나 아래 버튼으로 참여하세요": "Scan the on-site QR code or use the button below to participate", "현장 참여 모드": "On-site Participation Mode", "현재 달성": "Current Achievement", "활동": "Activity", "활동 ID": "Activity ID", "활동 검증 상세": "Activity Verification Details", "활동 기록 #A-2026-0628-114 검증 현황": "Activity Record #A-2026-0628-114 Verification Status", "활동 기록 제출하기": "Submit Activity Record", "활동 기록이 제출되었습니다!": "Activity Record Submitted!", "활동 유형": "Activity Type", "활동 이력": "Activity History", "활동 일시": "Activity Date/Time", "활동 정보": "Activity Info", "활동/검증 관리": "Activity/Verification Management", "회원가입": "Sign Up", "획득 배지": "Badges Earned", "후원할 프로젝트를 선택하세요": "Choose a project to sponsor", "🌱 잘피 식재": "🌱 Seagrass Planting", "🏛️ 지방자치단체·공공기관": "🏛️ Local Government / Public Institution", "🏢 기업 / ESG 담당자": "🏢 Business / ESG Officer", "📄 PDF 리포트 다운로드": "📄 Download PDF Report", "📋 모니터링 기록": "📋 Monitoring Record", "📍 참여 프로젝트:": "📍 Project Joined:", "📷 사진 업로드 / 촬영": "📷 Upload / Take Photo", "🖼 기업 로고 업로드": "🖼 Upload Company Logo", "🖼 대표 이미지 업로드": "🖼 Upload Main Image", "🗑️ 쓰레기 수거": "🗑️ Waste Collection", "🗺️ 해양 복원 프로젝트 지도": "🗺️ Ocean Restoration Project Map", "🙋 시민 참여자": "🙋 Citizen Participant"};
+var enToKo = {};
+Object.keys(koToEn).forEach(function(k){ enToKo[koToEn[k]] = k; });
+
+function translateTree(node, lang){
+  for(var i=0;i<node.childNodes.length;i++){
+    var child = node.childNodes[i];
+    if(child.nodeType === 3){
+      var trimmed = child.textContent.trim();
+      if(!trimmed) continue;
+      if(lang === 'EN' && koToEn.hasOwnProperty(trimmed)){
+        child.textContent = child.textContent.replace(trimmed, koToEn[trimmed]);
+      } else if(lang === 'KR' && enToKo.hasOwnProperty(trimmed)){
+        child.textContent = child.textContent.replace(trimmed, enToKo[trimmed]);
+      }
+    } else if(child.nodeType === 1){
+      var tag = child.tagName;
+      if(tag !== 'SCRIPT' && tag !== 'STYLE') translateTree(child, lang);
+    }
+  }
+}
+
+function setLang(lang){
+  document.querySelectorAll('.lang-opt').forEach(function(opt){
+    opt.classList.toggle('active', opt.dataset.lang === lang);
+  });
+  translateTree(document.body, lang);
+  document.documentElement.setAttribute('lang', lang === 'EN' ? 'en' : 'ko');
+}
+document.querySelectorAll('.lang-opt').forEach(function(opt){
+  opt.addEventListener('click', function(){ setLang(opt.dataset.lang); });
+});
+
+/* ---- 챗봇 플로팅 UI (SC-26, 전 화면 공통) ---- */
+var chatAnswers = {
+  citizen: [
+    {q:'QR 참여는 어떻게 하나요?', a:'현장의 QR코드를 스캔하면 앱 설치 없이 바로 활동 참여 화면이 열립니다. 활동을 선택하고 GPS·사진을 제출하면 됩니다.'},
+    {q:'인증서는 언제 발급되나요?', a:'시민이 제출한 활동 기록은 GPS, 사진, 위성, GIS 검증 과정을 거치며 검증 완료 후 인증서가 발급됩니다.'},
+    {q:'포인트는 어디서 사용하나요?', a:'누적 활동 포인트는 마이페이지에서 확인할 수 있으며, 파트너사 혜택과 연계되어 사용 가능합니다.'}
+  ],
+  biz: [
+    {q:'스폰서십 비용은 얼마인가요?', a:'Basic은 월/프로젝트 300만원부터, Standard는 700만원부터 시작하며 Premium은 맞춤 견적으로 진행됩니다.'},
+    {q:'ESG 리포트 샘플을 볼 수 있나요?', a:'네, ESG 리포트 미리보기 화면(SC-22)에서 실제 리포트 구성과 검증 배지를 확인하실 수 있습니다.'},
+    {q:'탄소 크레딧과 어떤 차이가 있나요?', a:'OceanProof는 탄소 크레딧을 판매하는 서비스가 아니라, 해양 복원 활동을 검증 가능한 ESG 데이터와 커뮤니케이션 자료로 제공하는 플랫폼입니다.'}
+  ],
+  gov: [
+    {q:'지역 프로젝트를 등록하려면 어떻게 하나요?', a:'관리자/공공기관 권한으로 로그인 후 프로젝트 등록 화면(SC-24)에서 생태 구역 지정과 함께 신규 프로젝트를 등록할 수 있습니다.'},
+    {q:'정책 KPI는 어떻게 관리하나요?', a:'공공기관용 대시보드(SC-12)에서 복원 면적·참여 시민·폐기물 수거량 등 정책 성과 KPI를 실시간으로 추적할 수 있습니다.'}
+  ]
+};
+var currentChatUser = 'citizen';
+
+function toggleChat(){
+  document.getElementById('chat-window').classList.toggle('open');
+}
+function selectChatUser(el){
+  document.querySelectorAll('.chat-pill').forEach(function(p){ p.classList.remove('active'); });
+  el.classList.add('active');
+  currentChatUser = el.dataset.user;
+  renderSuggestions();
+}
+function renderSuggestions(){
+  var box = document.getElementById('chat-suggest');
+  box.innerHTML = '';
+  chatAnswers[currentChatUser].forEach(function(item){
+    var btn = document.createElement('div');
+    btn.className = 'chat-suggest-btn';
+    btn.textContent = item.q;
+    btn.onclick = function(){ askChat(item.q, item.a); };
+    box.appendChild(btn);
+  });
+}
+function askChat(q, a){
+  var body = document.getElementById('chat-body');
+  var userBubble = document.createElement('div');
+  userBubble.className = 'chat-bubble user';
+  userBubble.textContent = q;
+  body.appendChild(userBubble);
+  var botBubble = document.createElement('div');
+  botBubble.className = 'chat-bubble';
+  botBubble.textContent = a;
+  body.appendChild(botBubble);
+  body.scrollTop = body.scrollHeight;
+}
+function chatSend(){
+  var input = document.querySelector('.chat-input');
+  if(!input.textContent.trim()) return;
+  askChat(input.textContent, '문의 주신 내용은 담당자 확인 후 빠르게 안내드릴게요. 우선 아래 추천 질문도 참고해보세요!');
+  input.textContent = '';
+}
+renderSuggestions();
+
+/* ---- 페이지 전환 라우터: 한 번에 한 화면만 표시 ---- */
+var screenIds = Array.prototype.map.call(document.querySelectorAll('.screen'), function(el){ return el.id; });
+function routeTo(id){
+  if(screenIds.indexOf(id) === -1) id = 'sc01';
+  screenIds.forEach(function(sid){
+    document.getElementById(sid).classList.toggle('active', sid === id);
+  });
+  document.querySelectorAll('.demo-nav .links a').forEach(function(a){
+    a.classList.toggle('current', a.getAttribute('href') === '#' + id);
+  });
+  window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', function(){
+  routeTo(location.hash.replace('#',''));
+});
+routeTo(location.hash.replace('#','') || 'sc01');
+</script>
+
+</body></html>

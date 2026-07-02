@@ -156,8 +156,16 @@ export function MyPage() {
                     style={{ minWidth: 260 }}
                     onClick={() => navigate(`/projects/${p.id}`)}
                   >
-                    <div className="wf-img" style={{ height: 120 }}>
-                      {t('프로젝트 대표 이미지')}
+                    <div className="wf-img" style={{ height: 120, overflow: 'hidden', padding: 0 }}>
+                      {p.image ? (
+                        <img
+                          src={p.image}
+                          alt={t(p.name)}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                      ) : (
+                        t('프로젝트 대표 이미지')
+                      )}
                     </div>
                     <div className="pad16 col gap8">
                       <div className="row between">

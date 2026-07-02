@@ -13,8 +13,16 @@ export function ProjectCard({ project, onClick, selected, selectLabel }) {
       style={{ minWidth: 280, outline: selected ? '2px solid var(--ink)' : 'none' }}
       onClick={selectLabel ? undefined : handleClick}
     >
-      <div className="wf-img" style={{ height: 140 }}>
-        {t('프로젝트 대표 이미지')}
+      <div className="wf-img" style={{ height: 140, overflow: 'hidden', padding: 0 }}>
+        {project.image ? (
+          <img
+            src={project.image}
+            alt={t(project.name)}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        ) : (
+          t('프로젝트 대표 이미지')
+        )}
       </div>
       <div className="pad16 col gap8">
         <div className="row between">

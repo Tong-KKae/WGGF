@@ -4,6 +4,8 @@ export const projects = [
   {
     id: 'goseong-seagrass',
     name: '고성 잘피밭 복원 캠페인',
+    image:
+      'https://images.unsplash.com/photo-1629215833206-ba050a68cd65?fm=jpg&q=80&w=1200&auto=format&fit=crop',
     status: '모집중',
     statusVariant: 'accent',
     participants: 248,
@@ -24,6 +26,8 @@ export const projects = [
   {
     id: 'busan-cleanup',
     name: '부산 해안 쓰레기 정화',
+    image:
+      'https://images.unsplash.com/photo-1758599668949-5118d71838fd?fm=jpg&q=80&w=1200&auto=format&fit=crop',
     status: '진행중',
     statusVariant: 'default',
     participants: 412,
@@ -43,6 +47,8 @@ export const projects = [
   {
     id: 'yeosu-tidal',
     name: '여수 갯벌 모니터링',
+    image:
+      'https://images.unsplash.com/photo-1742898932342-855022ba36ab?fm=jpg&q=80&w=1200&auto=format&fit=crop',
     status: '진행중',
     statusVariant: 'default',
     participants: 96,

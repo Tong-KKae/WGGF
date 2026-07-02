@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { chatAnswers } from '../../data/mockData';
+import { useT } from '../../i18n';
 import './ChatWidget.css';
 
 const userTypes = [
@@ -9,6 +10,7 @@ const userTypes = [
 ];
 
 export function ChatWidget() {
+  const t = useT();
   const [open, setOpen] = useState(false);
   const [userType, setUserType] = useState('citizen');
   const [messages, setMessages] = useState([{ from: 'bot', text: '안녕하세요! 어떤 사용자이신가요?' }]);
@@ -61,20 +63,20 @@ export function ChatWidget() {
         <div className="chat-body" ref={bodyRef}>
           {messages.map((m, i) => (
             <div key={i} className={`chat-bubble ${m.from === 'user' ? 'user' : ''}`}>
-              {m.text}
+              {t(m.text)}
             </div>
           ))}
-          {typing && <div className="chat-typing">답변 작성중…</div>}
+          {typing && <div className="chat-typing">{t('답변 작성중…')}</div>}
 
           <div className="chat-userselect">
-            {userTypes.map((t) => (
+            {userTypes.map((ut) => (
               <button
                 type="button"
-                key={t.key}
-                className={`chat-pill ${userType === t.key ? 'active' : ''}`}
-                onClick={() => setUserType(t.key)}
+                key={ut.key}
+                className={`chat-pill ${userType === ut.key ? 'active' : ''}`}
+                onClick={() => setUserType(ut.key)}
               >
-                {t.label}
+                {t(ut.label)}
               </button>
             ))}
           </div>
@@ -86,7 +88,7 @@ export function ChatWidget() {
                 className="chat-suggest-btn"
                 onClick={() => askSuggested(item.q, item.a)}
               >
-                {item.q}
+                {t(item.q)}
               </button>
             ))}
           </div>
@@ -94,13 +96,13 @@ export function ChatWidget() {
         <div className="chat-input-row">
           <input
             className="chat-input"
-            placeholder="메시지를 입력하세요"
+            placeholder={t('메시지를 입력하세요')}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && send()}
           />
           <button type="button" className="chat-send" onClick={send}>
-            전송
+            {t('전송')}
           </button>
         </div>
       </div>

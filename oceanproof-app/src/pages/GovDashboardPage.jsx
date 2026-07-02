@@ -5,6 +5,7 @@ import { Sidebar } from '../components/ui/Sidebar';
 import { Pill } from '../components/ui/Pill';
 import { StatRow } from '../components/ui/Stat';
 import { govUser } from '../data/mockData';
+import { useT } from '../i18n';
 
 const tabs = [
   { key: 'map', label: '지역 성과 지도' },
@@ -15,6 +16,8 @@ const tabs = [
 
 export function GovDashboardPage() {
   const navigate = useNavigate();
+  const t = useT();
+  const trStats = govUser.stats.map((s) => ({ ...s, label: t(s.label), value: t(s.value) }));
 
   return (
     <ScreenCard>
@@ -22,36 +25,36 @@ export function GovDashboardPage() {
         suffix=" · GOV"
         right={
           <>
-            <Pill>{govUser.org}</Pill>
+            <Pill>{t(govUser.org)}</Pill>
             <button type="button" className="wf-btn" onClick={() => navigate('/')}>
-              로그아웃
+              {t('로그아웃')}
             </button>
           </>
         }
       />
       <div className="row split-mobile" style={{ minHeight: 640 }}>
-        <Sidebar tabs={tabs} active="map" onChange={() => {}} />
+        <Sidebar tabs={tabs.map((tb) => ({ ...tb, label: t(tb.label) }))} active="map" onChange={() => {}} />
         <div className="grow pad32 col gap24">
-          <div className="h2">지역별 해양 복원 성과</div>
+          <div className="h2">{t('지역별 해양 복원 성과')}</div>
           <div className="wf-map" style={{ height: 260 }}>
-            지역별 복원 성과 지도 시각화 (Leaflet.js)
+            {t('지역별 복원 성과 지도 시각화 (Leaflet.js)')}
           </div>
-          <StatRow stats={govUser.stats} />
-          <div className="h3">정책 성과 KPI 추적</div>
+          <StatRow stats={trStats} />
+          <div className="h3">{t('정책 성과 KPI 추적')}</div>
           <div className="table-scroll">
             <table>
               <tbody>
                 <tr>
-                  <th>지표</th>
-                  <th>목표</th>
-                  <th>현재 달성</th>
-                  <th>달성률</th>
+                  <th>{t('지표')}</th>
+                  <th>{t('목표')}</th>
+                  <th>{t('현재 달성')}</th>
+                  <th>{t('달성률')}</th>
                 </tr>
                 {govUser.kpiTable.map((row) => (
                   <tr key={row.metric}>
-                    <td>{row.metric}</td>
-                    <td>{row.goal}</td>
-                    <td>{row.current}</td>
+                    <td>{t(row.metric)}</td>
+                    <td>{t(row.goal)}</td>
+                    <td>{t(row.current)}</td>
                     <td>{row.rate}</td>
                   </tr>
                 ))}

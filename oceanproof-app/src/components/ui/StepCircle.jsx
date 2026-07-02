@@ -1,3 +1,6 @@
+import { useApp } from '../../context/AppContext';
+import { useT } from '../../i18n';
+
 export function StepCircle({ state, children, large = false }) {
   const cls = ['step-circle'];
   if (large) cls.push('lg');
@@ -7,6 +10,8 @@ export function StepCircle({ state, children, large = false }) {
 }
 
 export function MrvSteps({ steps }) {
+  const t = useT();
+  const { lang } = useApp();
   return (
     <div className="wf-card pad24 col gap20">
       {steps.map((s, i) => (
@@ -17,9 +22,9 @@ export function MrvSteps({ steps }) {
           </div>
           <div className="col gap8 grow">
             <div className="h3">
-              {s.step}단계 · {s.title}
+              {lang === 'EN' ? `Step ${s.step}` : `${s.step}단계`} · {t(s.title)}
             </div>
-            <div className="txt">{s.desc}</div>
+            <div className="txt">{t(s.desc)}</div>
           </div>
         </div>
       ))}

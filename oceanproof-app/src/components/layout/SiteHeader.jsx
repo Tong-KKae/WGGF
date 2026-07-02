@@ -1,12 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useT } from '../../i18n';
 
-export function SiteHeader({ suffix = '', backTo, backLabel = '← 메인으로', center, right }) {
+export function SiteHeader({ suffix = '', backTo, backLabel, center, right }) {
   const navigate = useNavigate();
+  const t = useT();
   return (
     <>
       <div className="site-header row between center">
         <Link to="/" className="logo">
-          🌊 OceanProof{suffix}
+          OceanProof{suffix}
         </Link>
         {backTo ? (
           <div
@@ -14,7 +16,7 @@ export function SiteHeader({ suffix = '', backTo, backLabel = '← 메인으로'
             style={{ textDecoration: 'underline', cursor: 'pointer' }}
             onClick={() => navigate(backTo)}
           >
-            {backLabel}
+            {backLabel ?? t('← 메인으로')}
           </div>
         ) : (
           center

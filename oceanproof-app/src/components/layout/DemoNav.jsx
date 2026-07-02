@@ -1,5 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
+import { useT } from '../../i18n';
+import { LangToggle } from '../ui/LangToggle';
 import './DemoNav.css';
 
 const citizenLinks = [
@@ -22,6 +24,7 @@ const tailLinks = [
 export function DemoNav() {
   const { mode, toggleMode } = useApp();
   const navigate = useNavigate();
+  const t = useT();
 
   const handleModeToggle = () => {
     const next = mode === 'citizen' ? 'admin' : 'citizen';
@@ -31,48 +34,49 @@ export function DemoNav() {
 
   return (
     <nav className="demo-nav">
-      <button type="button" className="brand" title="메인페이지로 이동" onClick={() => navigate('/')}>
-        🌊 OceanProof
+      <button type="button" className="brand" title={t('메인페이지로 이동')} onClick={() => navigate('/')}>
+        OceanProof
       </button>
       <div className="links">
         {mode === 'citizen' &&
           citizenLinks.map((l) => (
             <NavLink key={l.to} to={l.to} className={({ isActive }) => (isActive ? 'current' : '')}>
-              {l.label}
+              {t(l.label)}
             </NavLink>
           ))}
         {mode !== 'citizen' &&
           commonLinks.slice(0, 1).map((l) => (
             <NavLink key={l.to} to={l.to} className={({ isActive }) => (isActive ? 'current' : '')}>
-              {l.label}
+              {t(l.label)}
             </NavLink>
           ))}
         {mode === 'citizen' &&
           commonLinks.map((l) => (
             <NavLink key={l.to} to={l.to} className={({ isActive }) => (isActive ? 'current' : '')}>
-              {l.label}
+              {t(l.label)}
             </NavLink>
           ))}
         {mode === 'admin' &&
           adminLinks.map((l) => (
             <NavLink key={l.to} to={l.to} className={({ isActive }) => (isActive ? 'current' : '')}>
-              {l.label}
+              {t(l.label)}
             </NavLink>
           ))}
         {tailLinks.map((l) => (
           <NavLink key={l.to} to={l.to} className={({ isActive }) => (isActive ? 'current' : '')}>
-            {l.label}
+            {t(l.label)}
           </NavLink>
         ))}
       </div>
       <div className="account-links">
         {mode === 'citizen' && (
           <NavLink to="/mypage" style={{ cursor: 'pointer' }}>
-            마이페이지
+            {t('마이페이지')}
           </NavLink>
         )}
+        <LangToggle />
         <button type="button" id="mode-toggle" onClick={handleModeToggle}>
-          {mode === 'admin' ? '🙋 시민 모드로 전환' : '🛠 관리자 모드로 전환'}
+          {mode === 'admin' ? t('시민 모드로 전환') : t('관리자 모드로 전환')}
         </button>
       </div>
     </nav>

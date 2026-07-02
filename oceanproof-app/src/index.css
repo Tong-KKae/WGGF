@@ -72,12 +72,12 @@ button {
   display: flex;
   flex-direction: column;
 }
-.between {
-  justify-content: space-between;
-}
 .center {
   align-items: center;
   justify-content: center;
+}
+.between {
+  justify-content: space-between;
 }
 .wrap {
   flex-wrap: wrap;
@@ -316,6 +316,8 @@ textarea.wf-input {
 .site-header {
   width: 100%;
   padding: 18px 32px;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 .logo {
   font-weight: 800;
@@ -331,14 +333,24 @@ textarea.wf-input {
   font-size: 13px;
   color: var(--ink-soft);
   font-weight: 500;
+  justify-content: center;
+  flex: 1;
 }
 .site-nav > * {
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+  padding: 8px 4px;
 }
 .site-nav > *:hover {
   color: var(--primary-dark);
+}
+.site-header .pill {
+  padding: 9px 16px;
+  font-size: 12.5px;
+}
+.site-header .wf-btn {
+  min-width: 108px;
 }
 .site-footer {
   padding: 22px 32px;

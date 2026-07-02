@@ -1,12 +1,15 @@
+import { useT } from '../../i18n';
+
 export function PriceCard({ plan, selected, onSelect, ctaLabel }) {
+  const t = useT();
   return (
     <div className={`price-card ${plan.recommended ? 'recommend' : ''}`}>
-      {plan.recommended && <div className="recommend-badge">추천</div>}
+      {plan.recommended && <div className="recommend-badge">{t('추천')}</div>}
       <div className="label">{plan.label}</div>
-      <div className="price">{plan.price}</div>
+      <div className="price">{t(plan.price)}</div>
       <ul>
         {plan.features.map((f) => (
-          <li key={f}>{f}</li>
+          <li key={f}>{t(f)}</li>
         ))}
       </ul>
       <button
@@ -15,7 +18,7 @@ export function PriceCard({ plan, selected, onSelect, ctaLabel }) {
         style={{ textAlign: 'center', marginTop: 'auto' }}
         onClick={() => onSelect(plan)}
       >
-        {ctaLabel ?? `${plan.label} 선택`}
+        {ctaLabel ?? `${plan.label} ${t('선택')}`}
       </button>
     </div>
   );

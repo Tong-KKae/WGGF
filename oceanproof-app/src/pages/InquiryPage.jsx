@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SiteHeader } from '../components/layout/SiteHeader';
 import { ScreenCard } from '../components/ui/ScreenCard';
-import { LangToggle } from '../components/ui/LangToggle';
 import { useApp } from '../context/AppContext';
 import { useT } from '../i18n';
 
@@ -40,7 +39,7 @@ export function InquiryPage() {
 
   return (
     <ScreenCard>
-      <SiteHeader backTo="/" right={<><LangToggle /><button type="button" className="wf-btn">문의하기</button></>} />
+      <SiteHeader backTo="/" backLabel={t('← 메인으로')} right={<button type="button" className="wf-btn">{t('문의하기')}</button>} />
 
       <form className="row split-mobile" style={{ minHeight: 680 }} onSubmit={handleSubmit}>
         <div className="grow pad32 col gap20">
@@ -50,16 +49,16 @@ export function InquiryPage() {
           </div>
 
           <div className="row gap16 wrap">
-            <input className="wf-input grow" placeholder="기관/기업명" value={form.org} onChange={set('org')} />
-            <input className="wf-input grow" placeholder="담당자명" value={form.contact} onChange={set('contact')} />
+            <input className="wf-input grow" placeholder={t('기관/기업명')} value={form.org} onChange={set('org')} />
+            <input className="wf-input grow" placeholder={t('담당자명')} value={form.contact} onChange={set('contact')} />
           </div>
           <div className="row gap16 wrap">
-            <input className="wf-input grow" placeholder="이메일" value={form.email} onChange={set('email')} />
-            <input className="wf-input grow" placeholder="연락처" value={form.phone} onChange={set('phone')} />
+            <input className="wf-input grow" placeholder={t('이메일')} value={form.email} onChange={set('email')} />
+            <input className="wf-input grow" placeholder={t('연락처')} value={form.phone} onChange={set('phone')} />
           </div>
 
           <div className="col gap8">
-            <div className="label">기관 유형 선택</div>
+            <div className="label">{t('기관 유형 선택')}</div>
             <div className="row gap8 wrap">
               {orgTypes.map((o) => (
                 <button
@@ -68,14 +67,14 @@ export function InquiryPage() {
                   className={`pill choice ${form.orgType === o ? 'selected' : ''}`}
                   onClick={() => setForm((f) => ({ ...f, orgType: o }))}
                 >
-                  {o}
+                  {t(o)}
                 </button>
               ))}
             </div>
           </div>
 
           <div className="col gap8">
-            <div className="label">관심 서비스 선택 (복수 선택 가능)</div>
+            <div className="label">{t('관심 서비스 선택 (복수 선택 가능)')}</div>
             <div className="row gap8 wrap">
               {interests.map((i) => (
                 <button
@@ -84,14 +83,14 @@ export function InquiryPage() {
                   className={`pill choice ${form.interest.includes(i) ? 'selected' : ''}`}
                   onClick={() => toggleInterest(i)}
                 >
-                  {i}
+                  {t(i)}
                 </button>
               ))}
             </div>
           </div>
 
           <div className="col gap8">
-            <div className="label">예상 예산 선택</div>
+            <div className="label">{t('예상 예산 선택')}</div>
             <div className="row gap8 wrap">
               {budgets.map((b) => (
                 <button
@@ -100,7 +99,7 @@ export function InquiryPage() {
                   className={`pill choice ${form.budget === b ? 'selected' : ''}`}
                   onClick={() => setForm((f) => ({ ...f, budget: b }))}
                 >
-                  {b}
+                  {t(b)}
                 </button>
               ))}
             </div>
@@ -108,24 +107,24 @@ export function InquiryPage() {
 
           <textarea
             className="wf-input"
-            placeholder="문의 내용을 입력해주세요"
+            placeholder={t('문의 내용을 입력해주세요')}
             value={form.message}
             onChange={set('message')}
           />
 
           <button type="submit" className="wf-btn accent" style={{ width: 'fit-content' }}>
-            문의 제출하기
+            {t('문의 제출하기')}
           </button>
         </div>
 
         <div className="side-panel col gap16" style={{ padding: 32 }}>
-          <div className="h3">도입 후 제공되는 것</div>
+          <div className="h3">{t('도입 후 제공되는 것')}</div>
           <div className="col gap12">
-            <div className="wf-fill pad16 txt">✔ 검증된 환경 임팩트 데이터</div>
-            <div className="wf-fill pad16 txt">✔ ESG 공시용 PDF 리포트</div>
-            <div className="wf-fill pad16 txt">✔ 프로젝트별 성과 대시보드</div>
-            <div className="wf-fill pad16 txt">✔ 캠페인용 인증 배지/로고</div>
-            <div className="wf-fill pad16 txt">✔ 시민 참여 데이터 요약</div>
+            <div className="wf-fill pad16 txt">✔ {t('검증된 환경 임팩트 데이터')}</div>
+            <div className="wf-fill pad16 txt">✔ {t('ESG 공시용 PDF 리포트')}</div>
+            <div className="wf-fill pad16 txt">✔ {t('프로젝트별 성과 대시보드')}</div>
+            <div className="wf-fill pad16 txt">✔ {t('캠페인용 인증 배지/로고')}</div>
+            <div className="wf-fill pad16 txt">✔ {t('시민 참여 데이터 요약')}</div>
           </div>
         </div>
       </form>

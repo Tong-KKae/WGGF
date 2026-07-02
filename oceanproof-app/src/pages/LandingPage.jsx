@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { SiteHeader } from '../components/layout/SiteHeader';
 import { SiteFooter } from '../components/layout/SiteFooter';
 import { ScreenCard } from '../components/ui/ScreenCard';
-import { LangToggle } from '../components/ui/LangToggle';
 import { useT } from '../i18n';
 
 const flowSteps = [
@@ -33,18 +32,15 @@ export function LandingPage() {
           </div>
         }
         right={
-          <>
-            <LangToggle />
-            <button type="button" className="wf-btn accent" onClick={() => navigate('/join')}>
-              {t('참여하기')}
-            </button>
-          </>
+          <button type="button" className="wf-btn accent" onClick={() => navigate('/join')}>
+            {t('참여하기')}
+          </button>
         }
       />
 
       <div className="hero row gap24 wrap">
         <div className="col gap16 grow" style={{ justifyContent: 'center', minWidth: 280 }}>
-          <div className="label">SC-01 · 플랫폼 소개</div>
+          <div className="label">{t('플랫폼 소개')}</div>
           <div className="h1" style={{ whiteSpace: 'pre-line' }}>
             {t('시민의 해양 복원 참여를,\n측정 가능한 ESG 자산으로')}
           </div>
@@ -64,8 +60,8 @@ export function LandingPage() {
         </div>
         <div className="wf-map grow" style={{ height: 240, minWidth: 280 }}>
           <div className="col gap8 center">
-            <div>🗺️ 해양 복원 프로젝트 지도</div>
-            <div className="small">(전국 진행 프로젝트 위치 시각화)</div>
+            <div>🗺️ {t('해양 복원 프로젝트 지도')}</div>
+            <div className="small">{t('(전국 진행 프로젝트 위치 시각화)')}</div>
           </div>
         </div>
       </div>
@@ -73,7 +69,7 @@ export function LandingPage() {
 
       <div className="section" style={{ textAlign: 'center' }}>
         <div className="section-title">
-          <div className="label">SC-27 · 작동 방식</div>
+          <div className="label">{t('작동 방식')}</div>
           <div className="h2">{t('OceanProof는 이렇게 작동합니다')}</div>
         </div>
         <div className="row gap16 wrap" style={{ justifyContent: 'center' }}>
@@ -82,9 +78,9 @@ export function LandingPage() {
               <div className="flow-card">
                 <div className="small">{s.n}</div>
                 <div className="h3" style={{ margin: '6px 0' }}>
-                  {s.title}
+                  {t(s.title)}
                 </div>
-                <div className="txt">{s.desc}</div>
+                <div className="txt">{t(s.desc)}</div>
               </div>
               {i < flowSteps.length - 1 && <div className="flow-arrow">→</div>}
             </span>
@@ -95,16 +91,16 @@ export function LandingPage() {
 
       <div className="section">
         <div className="section-title">
-          <div className="label">SC-02 · 이용 대상 선택</div>
+          <div className="label">{t('이용 대상 선택')}</div>
           <div className="h2">{t('어떤 목적으로 방문하셨나요?')}</div>
         </div>
         <div className="row gap16 wrap">
           {userTypes.map((u) => (
             <button type="button" key={u.title} className="type-card" onClick={() => navigate(u.to)}>
               <div className="h3" style={{ marginBottom: 8 }}>
-                {u.icon} {u.title}
+                {u.icon} {t(u.title)}
               </div>
-              <div className="txt">{u.desc}</div>
+              <div className="txt">{t(u.desc)}</div>
             </button>
           ))}
         </div>

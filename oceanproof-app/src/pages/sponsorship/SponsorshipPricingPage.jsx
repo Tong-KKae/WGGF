@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { SiteHeader } from '../../components/layout/SiteHeader';
 import { ScreenCard } from '../../components/ui/ScreenCard';
-import { LangToggle } from '../../components/ui/LangToggle';
 import { PriceCard } from '../../components/ui/PriceCard';
 import { useApp } from '../../context/AppContext';
 import { sponsorshipPlans } from '../../data/mockData';
@@ -23,7 +22,7 @@ export function SponsorshipPricingPage() {
 
   return (
     <ScreenCard>
-      <SiteHeader suffix=" · BUSINESS" right={<LangToggle />} />
+      <SiteHeader suffix=" · BUSINESS" />
       <div className="pad32 col gap20">
         <div className="h1">{t('해양 복원 프로젝트 스폰서십')}</div>
         <div className="txt">
@@ -38,12 +37,12 @@ export function SponsorshipPricingPage() {
               plan={plan}
               selected={sponsorship.plan?.key === plan.key}
               onSelect={handleSelect}
-              ctaLabel={plan.key === 'premium' ? 'Premium 문의' : `${plan.label} 선택`}
+              ctaLabel={plan.key === 'premium' ? t('Premium 문의') : `${plan.label} ${t('선택')}`}
             />
           ))}
         </div>
         <div className="wf-fill pad16 txt center" style={{ textAlign: 'center' }}>
-          ※ 스폰서십은 탄소 크레딧 판매가 아니라 검증 가능한 ESG 커뮤니케이션 데이터 제공 서비스입니다.
+          {t('※ 스폰서십은 탄소 크레딧 판매가 아니라 검증 가능한 ESG 커뮤니케이션 데이터 제공 서비스입니다.')}
         </div>
       </div>
     </ScreenCard>

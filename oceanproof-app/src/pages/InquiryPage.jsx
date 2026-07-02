@@ -39,7 +39,7 @@ export function InquiryPage() {
 
   return (
     <ScreenCard>
-      <SiteHeader backTo="/" backLabel={t('← 메인으로')} right={<button type="button" className="wf-btn">{t('문의하기')}</button>} />
+      <SiteHeader right={<button type="button" className="wf-btn">{t('문의하기')}</button>} />
 
       <form className="row split-mobile" style={{ minHeight: 680 }} onSubmit={handleSubmit}>
         <div className="grow pad32 col gap20">

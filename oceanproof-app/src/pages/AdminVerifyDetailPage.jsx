@@ -18,7 +18,7 @@ export function AdminVerifyDetailPage() {
 
   return (
     <ScreenCard>
-      <SiteHeader suffix=" · ADMIN" backTo="/admin" backLabel={t('← 관리자 페이지')} />
+      <SiteHeader suffix=" · ADMIN" />
       <div className="pad32 col gap20">
         <div className="h1">{t('활동 검증 상세')}</div>
         <div className="row gap16 wrap">

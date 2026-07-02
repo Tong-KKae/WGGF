@@ -15,7 +15,7 @@ export function ProjectDetailPage() {
 
   return (
     <ScreenCard>
-      <SiteHeader backTo="/projects" backLabel={t('← 프로젝트 목록')} />
+      <SiteHeader />
       <div className="row split-mobile" style={{ minHeight: 480 }}>
         <div className="col grow pad32 gap16">
           <Pill accent>{t(project.status)}</Pill>

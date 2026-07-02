@@ -8,7 +8,8 @@ export function SiteHeader({ suffix = '', backTo, backLabel, center, right }) {
     <>
       <div className="site-header row between center">
         <Link to="/" className="logo">
-          OceanProof{suffix}
+          <img className="site-logo" src="/oceanproof_logo.png" alt="OceanProof logo" />
+          <span>OceanProof{suffix}</span>
         </Link>
         {backTo ? (
           <div

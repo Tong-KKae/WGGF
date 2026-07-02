@@ -1,20 +1,21 @@
 import { useNavigate } from 'react-router-dom';
-import { SiteHeader } from '../components/layout/SiteHeader';
+import { UserRound, Building2, Landmark, QrCode, Database, ShieldCheck, BarChart3 } from 'lucide-react';
 import { SiteFooter } from '../components/layout/SiteFooter';
 import { ScreenCard } from '../components/ui/ScreenCard';
+import { FakeMap } from '../components/ui/FakeMap';
 import { useT } from '../i18n';
 
 const flowSteps = [
-  { n: '01', title: 'QR로 참여', desc: '시민이 QR로 해양 복원 활동에 참여합니다' },
-  { n: '02', title: '데이터 수집', desc: 'GPS·사진·활동 로그가 자동 수집됩니다' },
-  { n: '03', title: 'MRV 검증', desc: '위성·드론·GIS 기반으로 데이터를 검증합니다' },
-  { n: '04', title: 'ESG 활용', desc: '기업/공공기관이 ESG 리포트로 활용합니다' },
+  { icon: QrCode, title: 'QR로 참여', desc: '시민이 QR로 해양 복원 활동에 참여합니다' },
+  { icon: Database, title: '데이터 수집', desc: 'GPS·사진·활동 로그가 자동 수집됩니다' },
+  { icon: ShieldCheck, title: 'MRV 검증', desc: '위성·드론·GIS 기반으로 데이터를 검증합니다' },
+  { icon: BarChart3, title: 'ESG 활용', desc: '기업/공공기관이 ESG 리포트로 활용합니다' },
 ];
 
 const userTypes = [
-  { icon: '🙋', title: '시민 참여자', desc: 'QR 스캔으로 바로 활동 참여, 배지·인증서 획득', to: '/join' },
-  { icon: '🏢', title: '기업 / ESG 담당자', desc: '검증된 환경 데이터로 ESG 공시 리포트 받기', to: '/inquiry' },
-  { icon: '🏛️', title: '지방자치단체·공공기관', desc: '해양 복원 프로젝트 운영 및 정책 성과 관리', to: '/gov' },
+  { icon: UserRound, title: '시민 참여자', desc: 'QR 스캔으로 바로 활동 참여, 배지·인증서 획득', to: '/join' },
+  { icon: Building2, title: '기업 / ESG 담당자', desc: '검증된 환경 데이터로 ESG 공시 리포트 받기', to: '/inquiry' },
+  { icon: Landmark, title: '지방자치단체·공공기관', desc: '해양 복원 프로젝트 운영 및 정책 성과 관리', to: '/gov' },
 ];
 
 export function LandingPage() {
@@ -23,24 +24,8 @@ export function LandingPage() {
 
   return (
     <ScreenCard>
-      <SiteHeader
-        center={
-          <div className="row gap24 site-nav">
-            <div onClick={() => navigate('/projects')}>{t('프로젝트')}</div>
-            <div onClick={() => navigate('/sponsorship')}>{t('스폰서십')}</div>
-            <div onClick={() => navigate('/inquiry')}>{t('도입 문의')}</div>
-          </div>
-        }
-        right={
-          <button type="button" className="wf-btn accent" onClick={() => navigate('/join')}>
-            {t('참여하기')}
-          </button>
-        }
-      />
-
       <div className="hero row gap24 wrap">
         <div className="col gap16 grow" style={{ justifyContent: 'center', minWidth: 280 }}>
-          <div className="label">{t('플랫폼 소개')}</div>
           <div className="h1" style={{ whiteSpace: 'pre-line' }}>
             {t('시민의 해양 복원 참여를,\n측정 가능한 ESG 자산으로')}
           </div>
@@ -58,26 +43,25 @@ export function LandingPage() {
             </button>
           </div>
         </div>
-        <div className="wf-map grow" style={{ height: 240, minWidth: 280 }}>
-          <div className="col gap8 center">
-            <div>🗺️ {t('해양 복원 프로젝트 지도')}</div>
-            <div className="small">{t('(전국 진행 프로젝트 위치 시각화)')}</div>
-          </div>
+        <div className="col grow" style={{ minWidth: 280 }}>
+          <FakeMap height={240} />
         </div>
       </div>
       <div className="divider2" />
 
-      <div className="section" style={{ textAlign: 'center' }}>
+      <div className="section">
         <div className="section-title">
-          <div className="label">{t('작동 방식')}</div>
-          <div className="h2">{t('OceanProof는 이렇게 작동합니다')}</div>
+          <div className="h2">{t('OceanProof는 이렇게 운영돼요')}</div>
         </div>
         <div className="row gap16 wrap" style={{ justifyContent: 'center' }}>
           {flowSteps.map((s, i) => (
-            <span key={s.n} style={{ display: 'contents' }}>
+            <span key={s.title} style={{ display: 'contents' }}>
               <div className="flow-card">
-                <div className="small">{s.n}</div>
-                <div className="h3" style={{ margin: '6px 0' }}>
+                <div className="flow-card-icon">
+                  <s.icon size={20} strokeWidth={2.1} />
+                  <span className="flow-card-num">{i + 1}</span>
+                </div>
+                <div className="h3" style={{ margin: '12px 0 4px' }}>
                   {t(s.title)}
                 </div>
                 <div className="txt">{t(s.desc)}</div>
@@ -91,14 +75,14 @@ export function LandingPage() {
 
       <div className="section">
         <div className="section-title">
-          <div className="label">{t('이용 대상 선택')}</div>
           <div className="h2">{t('어떤 목적으로 방문하셨나요?')}</div>
         </div>
         <div className="row gap16 wrap">
           {userTypes.map((u) => (
             <button type="button" key={u.title} className="type-card" onClick={() => navigate(u.to)}>
-              <div className="h3" style={{ marginBottom: 8 }}>
-                {u.icon} {t(u.title)}
+              <div className="row gap8 center" style={{ marginBottom: 8, justifyContent: 'center' }}>
+                <u.icon size={20} strokeWidth={2} color="var(--primary-dark)" />
+                <div className="h3">{t(u.title)}</div>
               </div>
               <div className="txt">{t(u.desc)}</div>
             </button>

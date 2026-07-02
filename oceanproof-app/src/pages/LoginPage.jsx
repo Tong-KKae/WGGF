@@ -24,7 +24,8 @@ export function LoginPage() {
         </div>
         <div className="col grow pad32 gap24" style={{ justifyContent: 'center' }}>
           <a href="/" className="logo" style={{ width: 'fit-content' }}>
-            OceanProof
+            <img className="site-logo" src="/oceanproof_logo.png" alt="OceanProof logo" />
+            <span>OceanProof</span>
           </a>
           <div className="row gap8" style={{ borderBottom: '1.5px solid var(--ink)' }}>
             <button type="button" className={`tabbtn ${tab === 'login' ? 'active' : ''}`} onClick={() => setTab('login')}>

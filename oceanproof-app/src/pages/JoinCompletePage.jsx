@@ -14,7 +14,6 @@ export function JoinCompletePage() {
         className="pad32 col gap24 center"
         style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center', minHeight: 480, justifyContent: 'center' }}
       >
-        <div className="label">{t('보상 및 인증')}</div>
         <StepCircle state="active" large>
           ✓
         </StepCircle>

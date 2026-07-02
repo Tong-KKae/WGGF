@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FileText, Leaf, BadgeCheck, Download } from 'lucide-react';
 import { SiteHeader } from '../components/layout/SiteHeader';
 import { ScreenCard } from '../components/ui/ScreenCard';
 import { Sidebar } from '../components/ui/Sidebar';
 import { Pill } from '../components/ui/Pill';
 import { StatRow } from '../components/ui/Stat';
 import { PriceCard } from '../components/ui/PriceCard';
+import { TrendLineChart } from '../components/ui/TrendLineChart';
 import { EsgReportContent } from '../components/esg/EsgReportContent';
 import { useApp } from '../context/AppContext';
 import { businessUser, sponsorshipPlans } from '../data/mockData';
@@ -17,6 +19,21 @@ const tabs = [
   { key: 'report', label: 'ESG 리포트' },
   { key: 'branding', label: '브랜딩 자료', soon: true },
   { key: 'settings', label: '계정 설정', soon: true },
+];
+
+const monthlyTrend = [
+  { label: '4월', value: 36 },
+  { label: '5월', value: 52 },
+  { label: '6월', value: 66 },
+  { label: '7월', value: 74 },
+  { label: '8월', value: 62 },
+];
+
+const sponsorContribution = [
+  { label: 'A', value: 72 },
+  { label: 'B', value: 58 },
+  { label: 'C', value: 44 },
+  { label: 'D', value: 30 },
 ];
 
 export function BusinessDashboardPage() {
@@ -53,35 +70,89 @@ export function BusinessDashboardPage() {
         <div className="grow pad32 col gap24">
           {tab === 'dashboard' && (
             <>
-              <div className="row between center wrap gap12">
-                <div className="h2">
-                  {t(businessUser.quarter)} {t('ESG 성과')}
+              <div className="row between center wrap gap16">
+                <div className="col gap6">
+                  <div className="h2">
+                    {t(businessUser.quarter)} {t('ESG 성과')}
+                  </div>
+                  <div className="txt">2026년 2분기 ESG 성과 보고서</div>
                 </div>
                 <button type="button" className="wf-btn accent" onClick={() => setTab('report')}>
-                  📄 {t('PDF 리포트 다운로드')}
+                  <FileText size={15} strokeWidth={2.2} />
+                  {t('PDF 리포트 다운로드')}
                 </button>
               </div>
-              <StatRow stats={trStats} />
-              <div className="row gap16 wrap">
-                <div className="wf-img grow" style={{ height: 160 }}>
-                  {t('월별 탄소 격리량 추이 (차트)')}
+
+              <div className="esg-summary-grid">
+                <div className="stat-card">
+                  <div className="stat-card-title">{t('복원 면적')}</div>
+                  <div className="stat-card-value">8.4ha</div>
                 </div>
-                <div className="wf-img grow" style={{ height: 160 }}>
-                  {t('스폰서 프로젝트별 기여도 (차트)')}
+                <div className="stat-card">
+                  <div className="stat-card-title">{t('탄소 격리량 (tCO₂/년)')}</div>
+                  <div className="stat-card-value">3.6t</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-card-title">{t('수거 폐기물')}</div>
+                  <div className="stat-card-value">1,240kg</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-card-title">{t('참여 시민')}</div>
+                  <div className="stat-card-value">680명</div>
                 </div>
               </div>
+
               <div className="row gap16 wrap">
-                <div className="wf-fill pad16 grow txt">
-                  {t('Scope 3 탄소 감축 기여 데이터:')} <b>3.6 tCO₂</b> {t('반영 가능')}
+                <div className="esg-chart-card grow">
+                  <div className="h3">{t('월별 탄소 격리량 추이')}</div>
+                  <div className="chart-label">2026년 2분기</div>
+                  <TrendLineChart data={monthlyTrend} />
                 </div>
-                <div className="wf-fill pad16 grow txt">
-                  {t('브랜딩 캠페인용 인증 뱃지·로고')}{' '}
-                  <span
-                    style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                <div className="esg-chart-card grow">
+                  <div className="h3">{t('스폰서 프로젝트별 기여도')}</div>
+                  <div className="chart-label">프로젝트 기여 분포</div>
+                  <div className="chart-grid">
+                    {sponsorContribution.map((d) => (
+                      <div key={d.label} className="chart-bar" style={{ height: `${d.value}%` }}>
+                        <span>{d.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="row gap16 wrap esg-highlight-row">
+                <div className="esg-highlight-card grow">
+                  <div className="row gap10 center">
+                    <div className="esg-highlight-icon">
+                      <Leaf size={19} strokeWidth={2.2} />
+                    </div>
+                    <div className="h3">{t('Scope 3 탄소 감축 기여 데이터')}</div>
+                  </div>
+                  <div className="stat-card-value" style={{ fontSize: 26 }}>
+                    3.6 tCO₂
+                  </div>
+                  <div className="txt">
+                    {t('반영 가능')} · {t('검증된 ESG 성과 데이터')}
+                  </div>
+                </div>
+                <div className="esg-highlight-card grow">
+                  <div className="row gap10 center">
+                    <div className="esg-highlight-icon">
+                      <BadgeCheck size={19} strokeWidth={2.2} />
+                    </div>
+                    <div className="h3">{t('브랜딩 캠페인용 인증 뱃지·로고')}</div>
+                  </div>
+                  <div className="txt grow">{t('공식 인증 배지와 로고 파일을 브랜딩·홍보 자료로 자유롭게 활용하세요.')}</div>
+                  <button
+                    type="button"
+                    className="wf-btn solid"
+                    style={{ alignSelf: 'flex-start' }}
                     onClick={() => alert(t('데모: 브랜딩 자료를 다운로드합니다.'))}
                   >
+                    <Download size={15} strokeWidth={2.2} />
                     {t('다운로드')}
-                  </span>
+                  </button>
                 </div>
               </div>
             </>

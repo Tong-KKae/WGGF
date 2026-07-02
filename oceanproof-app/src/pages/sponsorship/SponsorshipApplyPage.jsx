@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ImageUp } from 'lucide-react';
 import { SiteHeader } from '../../components/layout/SiteHeader';
 import { ScreenCard } from '../../components/ui/ScreenCard';
 import { FlowSteps } from '../../components/ui/FlowSteps';
@@ -81,7 +82,10 @@ export function SponsorshipApplyPage() {
                 style={{ display: 'none' }}
                 onChange={(e) => setForm((f) => ({ ...f, logoName: e.target.files?.[0]?.name ?? '' }))}
               />
-              🖼 {form.logoName ? `${t('업로드됨')}: ${form.logoName}` : t('기업 로고 업로드')}
+              <span className="row gap8 center" style={{ justifyContent: 'center' }}>
+                <ImageUp size={16} strokeWidth={2.2} />
+                {form.logoName ? `${t('업로드됨')}: ${form.logoName}` : t('기업 로고 업로드')}
+              </span>
             </label>
             <textarea className="wf-input" placeholder={t('요청사항')} value={form.request} onChange={set('request')} />
           </div>

@@ -3,6 +3,13 @@ import { Pill } from '../ui/Pill';
 import { esgReport } from '../../data/mockData';
 import { useT } from '../../i18n';
 
+const quarterlyImpact = [
+  { label: '1분기', value: 42 },
+  { label: '2분기', value: 58 },
+  { label: '3분기', value: 71 },
+  { label: '4분기', value: 88 },
+];
+
 export function EsgReportContent({ showTitle = true }) {
   const t = useT();
   const trStats = esgReport.stats.map((s) => ({ ...s, label: t(s.label), value: t(s.value) }));
@@ -40,8 +47,15 @@ export function EsgReportContent({ showTitle = true }) {
           </div>
         ))}
         <div className="h3">{t('4. 환경 임팩트 결과')}</div>
-        <div className="wf-img" style={{ height: 140 }}>
-          {t('분기별 임팩트 결과 차트')}
+        <div className="col gap4">
+          <div className="chart-label">{t('분기별 임팩트 결과 차트')}</div>
+          <div className="chart-grid" style={{ height: 140 }}>
+            {quarterlyImpact.map((q) => (
+              <div key={q.label} className="chart-bar" style={{ height: `${q.value}%` }}>
+                <span>{t(q.label)}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

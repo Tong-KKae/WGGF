@@ -9,8 +9,8 @@ export function ProjectCard({ project, onClick, selected, selectLabel }) {
   const handleClick = onClick ?? (() => navigate(`/projects/${project.id}`));
   return (
     <div
-      className="wf-card clickable grow"
-      style={{ minWidth: 280, outline: selected ? '2px solid var(--ink)' : 'none' }}
+      className="wf-card clickable"
+      style={{ outline: selected ? '2px solid var(--ink)' : 'none' }}
       onClick={selectLabel ? undefined : handleClick}
     >
       <div className="wf-img" style={{ height: 140, overflow: 'hidden', padding: 0 }}>

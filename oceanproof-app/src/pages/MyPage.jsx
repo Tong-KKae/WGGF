@@ -34,8 +34,12 @@ export function MyPage() {
         <Sidebar tabs={tabs.map((tb) => ({ ...tb, label: t(tb.label) }))} active={tab} onChange={setTab} />
         <div className="grow pad32 col gap24">
           <div className="row gap16 wrap">
-            <div className="wf-img" style={{ width: 80, height: 80, borderRadius: '50%' }}>
-              {t('프로필')}
+            <div style={{ width: 80, height: 80, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+              <img
+                src={citizenUser.photo}
+                alt={t(citizenUser.name)}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
             </div>
             <div className="col gap8" style={{ justifyContent: 'center' }}>
               <div className="h2">
@@ -90,8 +94,10 @@ export function MyPage() {
               <div className="cert-card">
                 <div className="cert-inner col gap10">
                   <div className="row between">
-                    <div className="label">CERTIFICATE NO.</div>
-                    <div className="txt">{certificate.no}</div>
+                    <div className="label mono" style={{ textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      Certificate No.
+                    </div>
+                    <div className="txt mono">{certificate.no}</div>
                   </div>
                   <div className="divider2" />
                   <div className="row between txt">
@@ -148,12 +154,11 @@ export function MyPage() {
           {tab === 'projects' && (
             <div className="col gap16">
               <div className="h3">{t('참여 프로젝트')}</div>
-              <div className="row gap16 wrap">
+              <div className="card-grid">
                 {projects.slice(0, 2).map((p) => (
                   <div
                     key={p.id}
-                    className="wf-card clickable grow"
-                    style={{ minWidth: 260 }}
+                    className="wf-card clickable"
                     onClick={() => navigate(`/projects/${p.id}`)}
                   >
                     <div className="wf-img" style={{ height: 120, overflow: 'hidden', padding: 0 }}>

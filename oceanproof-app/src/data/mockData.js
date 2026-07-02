@@ -1,4 +1,16 @@
 // Mock data for OceanProof demo — no backend, everything is static/local state.
+import { Sprout, Trash2, ClipboardList, Medal } from 'lucide-react';
+
+export const sponsorCompanies = {
+  blueWave: { name: 'BlueWave Corp', color: '#2f7d5c' },
+  greenTide: { name: 'GreenTide Holdings', color: '#3f6db0' },
+};
+
+export const projectMapMarkers = [
+  { id: 'goseong-seagrass', label: '고성 잘피밭', x: 61, y: 74 },
+  { id: 'busan-cleanup', label: '부산 해안 정화', x: 85, y: 54 },
+  { id: 'yeosu-tidal', label: '여수 갯벌', x: 42, y: 85 },
+];
 
 export const projects = [
   {
@@ -21,7 +33,7 @@ export const projects = [
       { label: '탄소 격리량', value: '1.4t' },
       { label: '참여 시민', value: '248명' },
     ],
-    sponsors: ['기업 로고 A', '기업 로고 B'],
+    sponsors: [sponsorCompanies.blueWave, sponsorCompanies.greenTide],
   },
   {
     id: 'busan-cleanup',
@@ -42,7 +54,7 @@ export const projects = [
       { label: '현재 수거량', value: '2,640kg' },
       { label: '참여 시민', value: '412명' },
     ],
-    sponsors: ['기업 로고 A'],
+    sponsors: [sponsorCompanies.blueWave],
   },
   {
     id: 'yeosu-tidal',
@@ -63,21 +75,21 @@ export const projects = [
       { label: '조사 회차', value: '12회'},
       { label: '참여 시민', value: '96명' },
     ],
-    sponsors: ['기업 로고 B'],
+    sponsors: [sponsorCompanies.greenTide],
   },
 ];
 
 export const activityChoices = [
-  { key: 'seagrass', label: '🌱 잘피 식재' },
-  { key: 'cleanup', label: '🗑️ 쓰레기 수거' },
-  { key: 'monitoring', label: '📋 모니터링 기록' },
+  { key: 'seagrass', icon: Sprout, label: '잘피 식재' },
+  { key: 'cleanup', icon: Trash2, label: '쓰레기 수거' },
+  { key: 'monitoring', icon: ClipboardList, label: '모니터링 기록' },
 ];
 
 export const myBadges = [
-  { key: 'seagrass', icon: '🌱', label: '잘피 식재', earned: true },
-  { key: 'cleanup', icon: '🗑️', label: '정화 활동', earned: true },
-  { key: 'monitoring', icon: '📋', label: '모니터링', earned: true },
-  { key: 'ten', icon: '🏅', label: '10회 참여', earned: false },
+  { key: 'seagrass', icon: Sprout, label: '잘피 식재', earned: true },
+  { key: 'cleanup', icon: Trash2, label: '정화 활동', earned: true },
+  { key: 'monitoring', icon: ClipboardList, label: '모니터링', earned: true },
+  { key: 'ten', icon: Medal, label: '10회 참여', earned: false },
 ];
 
 export const activityHistory = [
@@ -98,6 +110,7 @@ export const certificate = {
 
 export const citizenUser = {
   name: '김해양',
+  photo: 'https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?fm=jpg&q=80&w=200&auto=format&fit=crop',
   activities: 12,
   points: 320,
   badges: 4,

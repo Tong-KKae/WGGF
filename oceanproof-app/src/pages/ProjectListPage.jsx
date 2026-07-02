@@ -25,13 +25,7 @@ export function ProjectListPage() {
 
   return (
     <ScreenCard>
-      <SiteHeader
-        center={
-          <div className="row gap24 site-nav">
-            <div>{t('프로젝트')}</div>
-          </div>
-        }
-      />
+      <SiteHeader />
       <div className="pad32 col gap16">
         <div className="row between center wrap gap12">
           <div className="h2">{t('해양 복원 프로젝트')}</div>
@@ -55,7 +49,7 @@ export function ProjectListPage() {
             ))}
           </div>
         </div>
-        <div className="row gap16 wrap">
+        <div className="card-grid">
           {filtered.map((p) => (
             <ProjectCard key={p.id} project={p} />
           ))}

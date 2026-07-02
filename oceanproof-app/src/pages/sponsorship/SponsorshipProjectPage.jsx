@@ -57,7 +57,7 @@ export function SponsorshipProjectPage() {
           ))}
         </div>
 
-        <div className="row gap16 wrap">
+        <div className="card-grid">
           {projects.map((p) => (
             <ProjectCard
               key={p.id}

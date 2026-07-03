@@ -4,6 +4,7 @@ import { ScreenCard } from '../components/ui/ScreenCard';
 import { Sidebar } from '../components/ui/Sidebar';
 import { Pill } from '../components/ui/Pill';
 import { StatRow } from '../components/ui/Stat';
+import { FakeMap } from '../components/ui/FakeMap';
 import { govUser } from '../data/mockData';
 import { useT } from '../i18n';
 
@@ -36,8 +37,11 @@ export function GovDashboardPage() {
         <Sidebar tabs={tabs.map((tb) => ({ ...tb, label: t(tb.label) }))} active="map" onChange={() => {}} />
         <div className="grow pad32 col gap24">
           <div className="h2">{t('지역별 해양 복원 성과')}</div>
-          <div className="wf-map" style={{ height: 260 }}>
-            {t('지역별 복원 성과 지도 시각화 (Leaflet.js)')}
+          <div className="col gap8">
+            <FakeMap height={260} />
+            <div className="small" style={{ textAlign: 'center' }}>
+              {t('지역별 복원 성과 지도 시각화')} · {t('핀 클릭 시 프로젝트 상세로 이동')}
+            </div>
           </div>
           <StatRow stats={trStats} />
           <div className="h3">{t('정책 성과 KPI 추적')}</div>

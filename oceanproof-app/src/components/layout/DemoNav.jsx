@@ -1,41 +1,39 @@
 import { NavLink, useNavigate } from 'react-router-dom';
+import { UserCog, ShieldCheck } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { useT } from '../../i18n';
-import { LangToggle } from '../ui/LangToggle';
 import './DemoNav.css';
 
 const citizenLinks = [
-  { to: '/join', label: '참여(QR)' },
-  { to: '/projects/goseong-seagrass', label: '상세' },
+  { to: '/projects', label: '프로젝트' },
+  { to: '/join', label: '참여하기' },
 ];
 
-const commonLinks = [{ to: '/business', label: 'ESG(기업)' }, { to: '/gov', label: '대시보드(공공)' }];
+const commonLinks = [{ to: '/business', label: '기업 서비스' }, { to: '/gov', label: '공공 서비스' }];
 
 const adminLinks = [
   { to: '/admin', label: '관리자' },
-  { to: '/admin/verify/A-0628-114', label: '검증상세' },
+  { to: '/admin/verify/A-0628-114', label: '검증 상세' },
 ];
 
-const tailLinks = [
-  { to: '/inquiry', label: '도입문의' },
-  { to: '/sponsorship/payment', label: '결제' },
-];
+const tailLinks = [{ to: '/inquiry', label: '도입 문의' }];
 
 export function DemoNav() {
-  const { mode, toggleMode } = useApp();
+  const { mode, setMode, lang, setLang } = useApp();
   const navigate = useNavigate();
   const t = useT();
 
   const handleModeToggle = () => {
     const next = mode === 'citizen' ? 'admin' : 'citizen';
-    toggleMode();
+    setMode(next);
     navigate(next === 'admin' ? '/admin' : '/mypage');
   };
 
   return (
     <nav className="demo-nav">
-      <button type="button" className="brand" title={t('메인페이지로 이동')} onClick={() => navigate('/')}>
-        OceanProof
+      <button type="button" className="brand logo logo-demo" title={t('메인페이지로 이동')} onClick={() => navigate('/')}>
+        <img className="site-logo" src="/oceanproof_logo.png" alt="OceanProof logo" />
+        <span>OceanProof</span>
       </button>
       <div className="links">
         {mode === 'citizen' &&
@@ -69,15 +67,38 @@ export function DemoNav() {
         ))}
       </div>
       <div className="account-links">
-        {mode === 'citizen' && (
-          <NavLink to="/mypage" style={{ cursor: 'pointer' }}>
-            {t('마이페이지')}
-          </NavLink>
-        )}
-        <LangToggle />
-        <button type="button" id="mode-toggle" onClick={handleModeToggle}>
-          {mode === 'admin' ? t('시민 모드로 전환') : t('관리자 모드로 전환')}
-        </button>
+        <NavLink to="/mypage" style={{ cursor: 'pointer' }}>
+          {t('마이페이지')}
+        </NavLink>
+        <div className="control-pill row">
+          <button
+            type="button"
+            className="control-seg"
+            title={mode === 'citizen' ? t('관리자 모드로 보기') : t('시민 모드로 보기')}
+            onClick={handleModeToggle}
+          >
+            {mode === 'citizen' ? (
+              <ShieldCheck size={14} strokeWidth={2.3} />
+            ) : (
+              <UserCog size={14} strokeWidth={2.3} />
+            )}
+          </button>
+          <span className="control-divider" />
+          <button
+            type="button"
+            className={`control-seg ${lang === 'KR' ? 'active' : ''}`}
+            onClick={() => setLang('KR')}
+          >
+            KR
+          </button>
+          <button
+            type="button"
+            className={`control-seg ${lang === 'EN' ? 'active' : ''}`}
+            onClick={() => setLang('EN')}
+          >
+            EN
+          </button>
+        </div>
       </div>
     </nav>
   );

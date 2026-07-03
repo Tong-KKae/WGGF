@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CheckCircle2 } from 'lucide-react';
 import { SiteHeader } from '../components/layout/SiteHeader';
 import { ScreenCard } from '../components/ui/ScreenCard';
 import { useApp } from '../context/AppContext';
@@ -8,6 +9,13 @@ import { useT } from '../i18n';
 const orgTypes = ['대기업', 'EU 수출기업', '지방자치단체', '공공기관', '기타'];
 const interests = ['ESG 리포트', '프로젝트 스폰서십', '공공 프로젝트 운영', '데이터 패키지', '브랜딩 캠페인'];
 const budgets = ['500만원 미만', '500~1000만원', '1000~3000만원', '3000만원 이상', '미정'];
+const benefits = [
+  '검증된 환경 임팩트 데이터',
+  'ESG 공시용 PDF 리포트',
+  '프로젝트별 성과 대시보드',
+  '캠페인용 인증 배지/로고',
+  '시민 참여 데이터 요약',
+];
 
 export function InquiryPage() {
   const navigate = useNavigate();
@@ -119,12 +127,13 @@ export function InquiryPage() {
 
         <div className="side-panel col gap16" style={{ padding: 32 }}>
           <div className="h3">{t('도입 후 제공되는 것')}</div>
-          <div className="col gap12">
-            <div className="wf-fill pad16 txt">✔ {t('검증된 환경 임팩트 데이터')}</div>
-            <div className="wf-fill pad16 txt">✔ {t('ESG 공시용 PDF 리포트')}</div>
-            <div className="wf-fill pad16 txt">✔ {t('프로젝트별 성과 대시보드')}</div>
-            <div className="wf-fill pad16 txt">✔ {t('캠페인용 인증 배지/로고')}</div>
-            <div className="wf-fill pad16 txt">✔ {t('시민 참여 데이터 요약')}</div>
+          <div className="col gap14">
+            {benefits.map((b) => (
+              <div key={b} className="benefit-row">
+                <CheckCircle2 size={18} strokeWidth={2.2} className="benefit-check" />
+                <div className="txt">{t(b)}</div>
+              </div>
+            ))}
           </div>
         </div>
       </form>

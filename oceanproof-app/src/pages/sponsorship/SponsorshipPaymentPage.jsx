@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CreditCard, Landmark, FileText } from 'lucide-react';
 import { SiteHeader } from '../../components/layout/SiteHeader';
 import { ScreenCard } from '../../components/ui/ScreenCard';
 import { FlowSteps } from '../../components/ui/FlowSteps';
@@ -10,9 +11,9 @@ import { useT } from '../../i18n';
 
 const flowLabels = ['상품 선택', '프로젝트 선택', '신청 정보 입력', '결제/계약'];
 const payOptions = [
-  { key: '카드 결제', icon: '💳' },
-  { key: '계좌이체', icon: '🏦' },
-  { key: '계약서 검토 후 정산', icon: '📄' },
+  { key: '카드 결제', icon: CreditCard },
+  { key: '계좌이체', icon: Landmark },
+  { key: '계약서 검토 후 정산', icon: FileText },
 ];
 
 export function SponsorshipPaymentPage() {

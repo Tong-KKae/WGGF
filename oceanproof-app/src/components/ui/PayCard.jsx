@@ -1,7 +1,7 @@
-export function PayCard({ icon, label, selected, onClick }) {
+export function PayCard({ icon: Icon, label, selected, onClick }) {
   return (
     <button type="button" className={`pay-card ${selected ? 'selected' : ''}`} onClick={onClick}>
-      {icon}
+      <Icon size={20} strokeWidth={2} />
       <br />
       {label}
     </button>

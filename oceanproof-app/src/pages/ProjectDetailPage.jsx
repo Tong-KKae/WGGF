@@ -3,7 +3,8 @@ import { SiteHeader } from '../components/layout/SiteHeader';
 import { ScreenCard } from '../components/ui/ScreenCard';
 import { Pill } from '../components/ui/Pill';
 import { StatRow } from '../components/ui/Stat';
-import { projects } from '../data/mockData';
+import { FakeMap } from '../components/ui/FakeMap';
+import { projects, projectMapMarkers } from '../data/mockData';
 import { useT } from '../i18n';
 
 export function ProjectDetailPage() {
@@ -12,24 +13,36 @@ export function ProjectDetailPage() {
   const project = projects.find((p) => p.id === id) ?? projects[0];
   const t = useT();
   const trStats = project.stats.map((s) => ({ ...s, label: t(s.label), value: t(s.value) }));
+  const ownMarker = projectMapMarkers.filter((m) => m.id === project.id);
 
   return (
     <ScreenCard>
       <SiteHeader />
       <div className="row split-mobile" style={{ minHeight: 480 }}>
         <div className="col grow pad32 gap16">
+          <div className="wf-img" style={{ height: 240, overflow: 'hidden', padding: 0 }}>
+            <img
+              src={project.image}
+              alt={t(project.name)}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </div>
           <Pill accent>{t(project.status)}</Pill>
           <div className="h1">{t(project.name)}</div>
           <div className="txt">{t(project.description)}</div>
-          <div className="wf-map" style={{ height: 220 }}>
-            {t('지정 생태 구역 지도 (Leaflet.js)')}
-          </div>
           <StatRow stats={trStats} />
+          <div className="h3">{t('위치')}</div>
+          <FakeMap markers={ownMarker} onSelect={() => {}} height={220} />
           <div className="h3">{t('스폰서 기업')}</div>
-          <div className="row gap8 wrap">
+          <div className="row gap12 wrap">
             {project.sponsors.map((s) => (
-              <div key={s} className="wf-fill pad16 grow center small">
-                {t(s)}
+              <div key={s.name} className="sponsor-chip">
+                <span className="sponsor-avatar" style={{ background: s.color }}>
+                  {s.name[0]}
+                </span>
+                <span className="txt" style={{ fontWeight: 700, color: 'var(--ink)' }}>
+                  {s.name}
+                </span>
               </div>
             ))}
           </div>

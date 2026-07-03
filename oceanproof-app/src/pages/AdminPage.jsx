@@ -122,7 +122,6 @@ export function AdminPage() {
 
           {tab === 'status' && (
             <div className="col gap24">
-              <div className="label">{t('5단계 순차 검증 필터')}</div>
               <div className="h2">{t('활동 기록 #A-2026-0628-114 검증 현황')}</div>
               <MrvSteps steps={mrvSteps} />
               <div className="small">{t('※ 시민 데이터는 최종 출력이 아닌 초기 입력값으로 처리됩니다.')}</div>

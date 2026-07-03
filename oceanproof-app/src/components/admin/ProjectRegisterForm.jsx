@@ -48,8 +48,8 @@ export function ProjectRegisterForm() {
             {t('지도에서 생태 구역 지정 (클릭/드래그)')}
           </div>
           <div className="row gap16 wrap">
-            <input className="wf-input grow" placeholder={t('모집 시작일')} type="date" />
-            <input className="wf-input grow" placeholder={t('모집 종료일')} type="date" />
+            <input className="wf-input grow" placeholder={t('모집 시작일')} type="text" />
+            <input className="wf-input grow" placeholder={t('모집 종료일')} type="text" />
           </div>
           <input className="wf-input" placeholder={t('프로젝트 진행 기간')} />
           <div className="row gap16 wrap">

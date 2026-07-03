@@ -52,9 +52,7 @@ export function InquiryPage() {
       <form className="row split-mobile" style={{ minHeight: 680 }} onSubmit={handleSubmit}>
         <div className="grow pad32 col gap20">
           <div className="h1">{t('기업·기관 도입 문의')}</div>
-          <div className="txt">
-            {t('OceanProof는 해양 복원 활동을 검증 가능한 ESG 데이터로 전환하여 기업과 공공기관의 지속가능성 보고를 지원합니다.')}
-          </div>
+
 
           <div className="row gap16 wrap">
             <input className="wf-input grow" placeholder={t('기관/기업명')} value={form.org} onChange={set('org')} />
@@ -125,7 +123,7 @@ export function InquiryPage() {
           </button>
         </div>
 
-        <div className="side-panel col gap16" style={{ padding: 32 }}>
+        <div className="side-panel col gap16" style={{ padding: 32, margin: 30 }}>
           <div className="h3">{t('도입 후 제공되는 것')}</div>
           <div className="col gap14">
             {benefits.map((b) => (

@@ -47,7 +47,7 @@ export function ProjectDetailPage() {
             ))}
           </div>
         </div>
-        <div className="side-panel col" style={{ padding: 32 }}>
+        <div className="side-panel col" style={{ padding: 32 , marginTop:32, marginRight: 20}}>
           <div className="h3" style={{ marginBottom: 12 }}>
             {t('참여 방법')}
           </div>
@@ -57,17 +57,12 @@ export function ProjectDetailPage() {
           <button
             type="button"
             className="wf-btn accent"
-            style={{ textAlign: 'center', marginBottom: 12 }}
+            style={{ textAlign: 'center', marginTop: 12 }}
             onClick={() => navigate('/join')}
           >
             {t('지금 참여하기')}
           </button>
-          <div className="divider2" style={{ margin: '12px 0' }} />
-          <div className="small">
-            {t('상태')}: {t(project.status)} ({project.period})
-            <br />
-            {t('승인 방식')}: {t(project.approval)}
-          </div>
+
         </div>
       </div>
     </ScreenCard>

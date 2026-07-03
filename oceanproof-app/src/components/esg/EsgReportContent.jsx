@@ -19,7 +19,7 @@ export function EsgReportContent({ showTitle = true }) {
       <div className="row between center wrap gap12">
         {showTitle ? (
           <div className="col gap4">
-            <div className="h1">ESG Impact Report Preview</div>
+            <div className="h1">{t('ESG 임팩트 리포트 미리보기')}</div>
             <div className="txt">
               {t('기간')}: {esgReport.period}
             </div>
@@ -46,12 +46,11 @@ export function EsgReportContent({ showTitle = true }) {
             <div className="wf-box pad16 txt">{t(s.body)}</div>
           </div>
         ))}
-        <div className="h3">{t('4. 환경 임팩트 결과')}</div>
+        <div className="h3">{t('4. 분기별 환경 임팩트 결과')}</div>
         <div className="col gap4">
-          <div className="chart-label">{t('분기별 임팩트 결과 차트')}</div>
           <div className="chart-grid" style={{ height: 140 }}>
             {quarterlyImpact.map((q) => (
-              <div key={q.label} className="chart-bar" style={{ height: `${q.value}%` }}>
+              <div key={q.label} className="chart-bar" style={{ height: `${q.value}%`, marginBottom:15  }}>
                 <span>{t(q.label)}</span>
               </div>
             ))}

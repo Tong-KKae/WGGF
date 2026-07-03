@@ -25,14 +25,7 @@ export function AdminPage() {
 
   return (
     <ScreenCard>
-      <SiteHeader
-        suffix=" · ADMIN"
-        right={
-          <button type="button" className="wf-btn" onClick={() => navigate('/')}>
-            {t('관리자 로그아웃')}
-          </button>
-        }
-      />
+      <SiteHeader suffix=" · ADMIN" />
       <div className="row split-mobile" style={{ minHeight: 640 }}>
         <Sidebar tabs={tabs.map((tb) => ({ ...tb, label: t(tb.label) }))} active={tab} onChange={setTab} />
         <div className="grow pad32 col gap24">

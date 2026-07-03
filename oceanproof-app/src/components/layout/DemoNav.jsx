@@ -26,7 +26,7 @@ export function DemoNav() {
   const handleModeToggle = () => {
     const next = mode === 'citizen' ? 'admin' : 'citizen';
     setMode(next);
-    navigate(next === 'admin' ? '/admin' : '/mypage');
+    navigate('/');
   };
 
   return (
@@ -56,7 +56,7 @@ export function DemoNav() {
           ))}
         {mode === 'admin' &&
           adminLinks.map((l) => (
-            <NavLink key={l.to} to={l.to} className={({ isActive }) => (isActive ? 'current' : '')}>
+            <NavLink key={l.to} to={l.to} end className={({ isActive }) => (isActive ? 'current' : '')}>
               {t(l.label)}
             </NavLink>
           ))}

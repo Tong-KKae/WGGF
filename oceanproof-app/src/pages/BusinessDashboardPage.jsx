@@ -42,6 +42,7 @@ export function BusinessDashboardPage() {
   const { updateSponsorship } = useApp();
   const t = useT();
   const trStats = businessUser.stats.map((s) => ({ ...s, label: t(s.label), value: t(s.value) }));
+  const trMonthlyTrend = monthlyTrend.map((d) => ({ ...d, label: t(d.label) }));
 
   const handlePlanSelect = (plan) => {
     if (plan.key === 'premium') {
@@ -56,14 +57,7 @@ export function BusinessDashboardPage() {
     <ScreenCard>
       <SiteHeader
         suffix=" · BUSINESS"
-        right={
-          <>
-            <Pill>{t(businessUser.company)}</Pill>
-            <button type="button" className="wf-btn" onClick={() => navigate('/')}>
-              {t('로그아웃')}
-            </button>
-          </>
-        }
+        right={<Pill>{t(businessUser.company)}</Pill>}
       />
       <div className="row split-mobile" style={{ minHeight: 640 }}>
         <Sidebar tabs={tabs.map((tb) => ({ ...tb, label: t(tb.label) }))} active={tab} onChange={setTab} />
@@ -75,7 +69,6 @@ export function BusinessDashboardPage() {
                   <div className="h2">
                     {t(businessUser.quarter)} {t('ESG 성과')}
                   </div>
-                  <div className="txt">2026년 2분기 ESG 성과 보고서</div>
                 </div>
                 <button type="button" className="wf-btn accent" onClick={() => setTab('report')}>
                   <FileText size={15} strokeWidth={2.2} />
@@ -98,19 +91,19 @@ export function BusinessDashboardPage() {
                 </div>
                 <div className="stat-card">
                   <div className="stat-card-title">{t('참여 시민')}</div>
-                  <div className="stat-card-value">680명</div>
+                  <div className="stat-card-value">{t('680명')}</div>
                 </div>
               </div>
 
               <div className="row gap16 wrap">
                 <div className="esg-chart-card grow">
                   <div className="h3">{t('월별 탄소 격리량 추이')}</div>
-                  <div className="chart-label">2026년 2분기</div>
-                  <TrendLineChart data={monthlyTrend} />
+                  <div className="chart-label">{t('2026년 2분기')}</div>
+                  <TrendLineChart data={trMonthlyTrend} />
                 </div>
                 <div className="esg-chart-card grow">
                   <div className="h3">{t('스폰서 프로젝트별 기여도')}</div>
-                  <div className="chart-label">프로젝트 기여 분포</div>
+                  <div className="chart-label">{t('프로젝트 기여 분포')}</div>
                   <div className="chart-grid">
                     {sponsorContribution.map((d) => (
                       <div key={d.label} className="chart-bar" style={{ height: `${d.value}%` }}>
@@ -161,11 +154,6 @@ export function BusinessDashboardPage() {
           {tab === 'sponsor' && (
             <div className="col gap20">
               <div className="h2">{t('해양 복원 프로젝트 스폰서십')}</div>
-              <div className="txt">
-                {t(
-                  '기업은 해양 복원 프로젝트를 후원하고, 검증된 환경 임팩트 데이터를 ESG 리포트와 브랜딩 자료로 활용할 수 있습니다.'
-                )}
-              </div>
               <div className="row gap16 wrap">
                 {sponsorshipPlans.map((plan) => (
                   <PriceCard

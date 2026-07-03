@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { SiteHeader } from '../components/layout/SiteHeader';
 import { ScreenCard } from '../components/ui/ScreenCard';
 import { Sidebar } from '../components/ui/Sidebar';
@@ -16,32 +15,19 @@ const tabs = [
 ];
 
 export function GovDashboardPage() {
-  const navigate = useNavigate();
   const t = useT();
   const trStats = govUser.stats.map((s) => ({ ...s, label: t(s.label), value: t(s.value) }));
 
   return (
     <ScreenCard>
-      <SiteHeader
-        suffix=" · GOV"
-        right={
-          <>
-            <Pill>{t(govUser.org)}</Pill>
-            <button type="button" className="wf-btn" onClick={() => navigate('/')}>
-              {t('로그아웃')}
-            </button>
-          </>
-        }
-      />
+      <SiteHeader suffix=" · GOV" right={<Pill>{t(govUser.org)}</Pill>} />
       <div className="row split-mobile" style={{ minHeight: 640 }}>
         <Sidebar tabs={tabs.map((tb) => ({ ...tb, label: t(tb.label) }))} active="map" onChange={() => {}} />
         <div className="grow pad32 col gap24">
           <div className="h2">{t('지역별 해양 복원 성과')}</div>
           <div className="col gap8">
             <FakeMap height={260} />
-            <div className="small" style={{ textAlign: 'center' }}>
-              {t('지역별 복원 성과 지도 시각화')} · {t('핀 클릭 시 프로젝트 상세로 이동')}
-            </div>
+
           </div>
           <StatRow stats={trStats} />
           <div className="h3">{t('정책 성과 KPI 추적')}</div>

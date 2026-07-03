@@ -44,7 +44,6 @@ export function JoinPage() {
             <br />
             {t('바로 이 화면이 열립니다')}
           </div>
-          <div className="txt">{t('스마트폰 · 태블릿 · PC 등 인터넷 접속 기기 모두 지원')}</div>
         </div>
 
         <div className="divider2" />
@@ -59,7 +58,6 @@ export function JoinPage() {
               <MapPin size={15} strokeWidth={2.2} />
               {t('참여 프로젝트')}: <b>{t('고성 잘피밭 복원 캠페인')}</b>
             </div>
-            <div className="small">{t('위치 자동 인식됨')}</div>
           </div>
           <div className="row gap8 wrap">
             {activityChoices.map((c) => (
@@ -100,19 +98,14 @@ export function JoinPage() {
                 <Camera size={16} strokeWidth={2.2} />
                 {photoName ? `${t('업로드됨')}: ${photoName}` : t('사진 업로드 / 촬영')}
               </div>
-              <span className="small">{t('자동 지오태깅 · 타임스탬프 적용')}</span>
             </div>
           </label>
           <div className="row gap16 wrap">
             <div className="wf-fill pad16 grow txt">
-              {t('위도/경도: 자동 수집됨')}
-              <br />
-              34.xxxx, 128.xxxx
+              {t('위도/경도: ')}
             </div>
             <div className="wf-fill pad16 grow txt">
-              {t('촬영 시각: 자동 수집됨')}
-              <br />
-              2026-06-30 14:22
+              {t('촬영 시각: ')}      
             </div>
           </div>
           <input

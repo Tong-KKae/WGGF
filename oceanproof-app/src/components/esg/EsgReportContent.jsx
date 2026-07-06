@@ -40,7 +40,7 @@ export function EsgReportContent({ showTitle = true }) {
       <StatRow stats={trStats} />
 
       <div className="wf-card pad24 col gap16">
-        {esgReport.sections.map((s) => (
+        {esgReport.sections.slice(0, 3).map((s) => (
           <div className="col gap8" key={s.title}>
             <div className="h3">{t(s.title)}</div>
             <div className="wf-box pad16 txt">{t(s.body)}</div>
@@ -56,6 +56,12 @@ export function EsgReportContent({ showTitle = true }) {
             ))}
           </div>
         </div>
+        {esgReport.sections.slice(3).map((s) => (
+          <div className="col gap8" key={s.title}>
+            <div className="h3">{t(s.title)}</div>
+            <div className="wf-box pad16 txt">{t(s.body)}</div>
+          </div>
+        ))}
       </div>
 
       <div className="row gap8 wrap">

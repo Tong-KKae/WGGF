@@ -24,7 +24,7 @@ export function SponsorshipPricingPage() {
     <ScreenCard>
       <SiteHeader suffix=" · BUSINESS" />
       <div className="pad32 col gap20">
-        <div className="h1">{t('해양폰서십')}</div>
+        <div className="h1">{t('해양 복원 프로젝트 스폰서십')}</div>
         <div className="txt">
           {t(
             '해양 복원 프로젝트를 후원하고, 검증된 환경 임팩트 데이터를 ESG 리포트와 브랜딩 자료로 활용할 수 있습니다.'

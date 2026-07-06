@@ -86,6 +86,8 @@ const dict = {
   '자동 지오태깅 · 타임스탬프 적용': 'Automatic geotagging · timestamp applied',
   '위도/경도: 자동 수집됨': 'Latitude/Longitude: auto-collected',
   '촬영 시각: 자동 수집됨': 'Time taken: auto-collected',
+  '위도/경도: ': 'Latitude/Longitude: ',
+  '촬영 시각: ': 'Time taken: ',
   '간단 메모 (선택)': 'Short memo (optional)',
   '활동 기록 제출하기': 'Submit Activity Record',
   '보상 및 인증': 'Reward & Certification',
@@ -355,24 +357,24 @@ const dict = {
   'PDF 다운로드': 'Download PDF',
   '데모: PDF 리포트를 다운로드합니다.': 'Demo: downloading the PDF report.',
   '브랜딩 자료 다운로드': 'Download Branding Materials',
-  '4. 환경 임팩트 결과': '4. Environmental Impact Results',
+  '4. 분기별 환경 임팩트 결과': '4. Quarterly Environmental Impact Results',
   '분기별 임팩트 결과 차트': 'Quarterly Impact Results Chart',
   '1분기': 'Q1',
   '2분기': 'Q2',
   '3분기': 'Q3',
   '4분기': 'Q4',
   '1. 프로젝트 개요': '1. Project Overview',
-  '고성·부산·여수 3개 해역에서 진행된 시민 참여형 해양 복원 프로젝트 요약 텍스트 영역':
-    'Summary of citizen-participation ocean restoration projects across Goseong, Busan, and Yeosu',
+  '2026년 2분기 동안 GREENERS 주식회사는 고성 잘피밭 복원, 부산 해안 쓰레기 정화, 여수 갯벌 모니터링 등 국내 3개 해역에서 진행된 시민 참여형 해양 복원 프로젝트를 후원했습니다. 총 680명의 시민이 참여했으며, 위성·드론·GIS 기반 MRV(측정·보고·검증) 체계를 통해 모든 활동 데이터의 신뢰성을 확보했습니다.':
+    'During Q2 2026, GREENERS Inc. sponsored citizen-participation ocean restoration projects across three domestic waters — Goseong seagrass restoration, Busan coastal cleanup, and Yeosu tidal flat monitoring. A total of 680 citizens took part, and the reliability of all activity data was ensured through a satellite, drone, and GIS-based MRV (Measurement, Reporting, Verification) system.',
   '2. 데이터 수집 방식': '2. Data Collection Method',
-  'QR 기반 시민 참여, GPS·사진 증거 자동 수집 방식 설명 텍스트 영역':
-    'Description of QR-based citizen participation with automatic GPS and photo evidence collection',
+  '참여 시민은 현장 QR코드를 스캔해 별도 앱 설치 없이 활동을 기록합니다. 촬영한 사진에는 GPS 좌표와 타임스탬프가 자동으로 태깅되며, 이 원시 데이터는 검증 전 1차 입력값으로 처리되어 이후 위성·드론 조사와 교차 검증됩니다.':
+    'Participating citizens scan an on-site QR code to log activities without installing a separate app. Photos taken are automatically tagged with GPS coordinates and a timestamp, and this raw data is treated as the initial input before verification, later cross-checked against satellite and drone surveys.',
   '3. MRV 검증 절차': '3. MRV Verification Process',
-  '시민 입력 → 위성 검증 → 드론 샘플링 → GIS 교차검증 → 최종 데이터셋 5단계 절차 설명':
-    'Citizen Input → Satellite Verification → Drone Sampling → GIS Cross-Verification → Final Dataset, a 5-stage process',
+  '시민 입력 → 위성 영상 기반 공간 변화 탐지 → 드론 고해상도 샘플링 → 공공 GIS 데이터셋 교차검증 → 최종 데이터셋 확정, 총 5단계 절차를 거쳐 데이터를 검증합니다. 각 단계를 통과한 데이터만 최종 ESG 성과 지표에 반영됩니다.':
+    'Data is verified through a 5-stage process: citizen input → satellite imagery-based spatial change detection → high-resolution drone sampling → cross-verification with public GIS datasets → final dataset confirmation. Only data that passes every stage is reflected in the final ESG performance metrics.',
   '5. ESG 커뮤니케이션 활용 문구': '5. ESG Communication Copy',
-  '기업 지속가능경영보고서·홈페이지 등에 인용 가능한 문구 영역':
-    'Copy suitable for citation in corporate sustainability reports and websites',
+  '당사는 2026년 2분기 OceanProof 플랫폼을 통해 고성·부산·여수 해역의 해양 생태계 복원 활동에 680명의 시민과 함께 참여했으며, 위성·드론·GIS 기반의 독립적 검증을 거쳐 8.4ha의 해양 생태계 복원과 3.6tCO₂의 탄소 격리 효과를 확인했습니다.':
+    'In Q2 2026, our company joined 680 citizens in ocean ecosystem restoration activities across the Goseong, Busan, and Yeosu waters via the OceanProof platform, and confirmed 8.4ha of restored marine ecosystem and 3.6tCO₂ of carbon sequestration through independent satellite, drone, and GIS-based verification.',
   '탄소 격리량 (tCO₂/년)': 'Carbon Sequestered (tCO₂/yr)',
   '수거 폐기물': 'Waste Collected',
 
